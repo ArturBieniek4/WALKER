@@ -630,7 +630,7 @@ void *UDPServer(void *) {
 			json jResponseObj;
 			jResponseObj["status"]=1;
 			jResponseObj["errorName"]="";
-			jResponseObj["ypr"]="";
+			jResponseObj["ypr"]=ypr;
 			jResponseObj["degs"]="";
 			jResponseObj["time"]=dt;
 			string jResponseString = jResponseObj.dump();
