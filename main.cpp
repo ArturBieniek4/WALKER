@@ -452,9 +452,9 @@ void *consoleInput(void *) {
 		uint8_t direction = LOW;
 		uint8_t motorNum;
 		if(instr=="x"){
-			cout << "PROGRAM EXIT...";
+			cout << "PROGRAM EXIT..." << endl;
 			emergencyStop();
-			programExit=true;
+			exit(0);
 		}
 		if(instr.length()==2)
 		{
@@ -665,9 +665,8 @@ void *UDPServer(void *) {
 		}
 		else if(type==4)
 		{
-			cout << "PROGRAM EXIT...";
+			cout << "PROGRAM EXIT..." << endl;
 			emergencyStop();
-			programExit=true;
 			exit(0);
 		}
 	}
@@ -717,7 +716,6 @@ int main() {
 	cout << "UDP Server thread detached[OK]" << endl;
 	cout << "Starting the main loop..." << endl;
     while(true) {
-		if(programExit) return 0;
 		loop();
 	}
     return 0;
