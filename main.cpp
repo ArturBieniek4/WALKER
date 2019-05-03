@@ -639,6 +639,7 @@ void *UDPServer(void *) {
 		int n = recvfrom(sockfd, (char *)udpBuffer, UDP_BUFFER_SIZE,  MSG_WAITALL, ( struct sockaddr *) &cliaddr, &len);
 		string s(udpBuffer);
 		string jRequestString = s.substr(0,n);
+		cout << jRequestString;
 		auto jRequestObj = json::parse(jRequestString);
 		unsigned int type = jRequestObj["type"];
 		if(type==1){
