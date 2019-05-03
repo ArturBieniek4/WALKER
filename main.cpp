@@ -562,14 +562,13 @@ void *consoleInput(void *) {
 	}
 }
 
-unsigned int direction[MOTOR_COUNT];
-float gyroval[MOTOR_COUNT];
-unsigned int gyroid[motorNum];
-unsigned int gyroid2[motorNum];
-unsigned int axisid[motorNum];
-
 void *gyroAutoCorrection(void *) {
-	for (int motorNum=0; motorNum<MOTOR_COUNT; motorNum++)
+	unsigned int direction[MOTOR_COUNT];
+	float gyroval[MOTOR_COUNT];
+	unsigned int gyroid[MOTOR_COUNT];
+	unsigned int gyroid2[MOTOR_COUNT];
+	unsigned int axisid[MOTOR_COUNT];
+	for (unsigned int motorNum=0; motorNum<MOTOR_COUNT; motorNum++)
 	{
 		gyroid[motorNum] = endstopMotor[motorNum][2];
 		gyroid2[motorNum] = endstopMotor[motorNum][4];
