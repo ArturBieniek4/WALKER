@@ -653,13 +653,14 @@ void *UDPServer(void *) {
 			}
 			stringstream timeBuffer;
 			time_t now = time(0);
-			timeBuffer << put_time(&now, "%d.%m.%Y %H:%M:%S");
+			tm timeTM = * localtime( & now );
+			timeBuffer << put_time(&timeTM, "%d.%m.%Y %H:%M:%S");
 			json jResponseObj;
 			jResponseObj["status"]=1;
 			jResponseObj["errorName"]="";
 			jResponseObj["ypr"]=full_ypr;
 			jResponseObj["degs"]=degs;
-			jResponseObj["time"]=dt;
+			jResponseObj["time"]=timeBuffer.str();
 			string jResponseString = jResponseObj.dump();
 			sendto(sockfd, jResponseString.c_str(), strlen(jResponseString.c_str()), MSG_CONFIRM, (const struct sockaddr *) &cliaddr, len);
 		}
