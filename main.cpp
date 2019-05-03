@@ -584,11 +584,11 @@ void *gyroAutoCorrection(void *) {
 				gyroval[motorNum] = (full_ypr[gyroid[motorNum]][axisid[motorNum]]) - (full_ypr[gyroid2[motorNum]][axisid[motorNum]]);
 				if(abs(destinations[motorNum]-gyroval[motorNum])>5)
 				{
-					if(destinations-gyroval[motorNum]<0){
+					if(destinations[motorNum]-gyroval[motorNum]<0){
 					direction[motorNum] = MOTOR_DIR_UP;
 					cout << "UP" << gyroval[motorNum] << endl;
 					}
-					else if(destinations-gyroval[motorNum]>0){
+					else if(destinations[motorNum]-gyroval[motorNum]>0){
 						direction[motorNum] = MOTOR_DIR_DOWN;
 						cout << "DOWN" << gyroval[motorNum] << endl;
 					}
