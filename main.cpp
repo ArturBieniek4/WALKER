@@ -669,6 +669,7 @@ void *UDPServer(void *) {
 			cout << "PROGRAM EXIT...";
 			emergencyStop();
 			programExit=true;
+			exit(0);
 		}
 	}
 }
