@@ -564,29 +564,33 @@ void *consoleInput(void *) {
 
 
 void *gyroAutoCorrection(void *) {
+	unsigned int direction[MOTOR_COUNT];
+	float gyroval[MOTOR_COUNT];
+	unsigned int gyroid[motorNum];
+	unsigned int gyroid2[motorNum];
+	unsigned int axisid[motorNum];
+	for (unsigned int motorNum=0; motorNum<MOTOR_COUNT; motorNum++)
+	{
+		gyroid[motorNum] = endstopMotor[motorNum][2];
+		gyroid2[motorNum] = endstopMotor[motorNum][4];
+		axisid[motorNum] = endstopMotor[motorNum][3];
+	}
 	while(true){
 		tmr2.reset();
 		for (unsigned int motorNum=0; motorNum<MOTOR_COUNT; motorNum++)
 		{
 			if(goToDestination[motorNum])
 			{
-				unsigned int direction = LOW;
-				float destinationDeg = destinations[motorNum];
-				float gyroval;
-				uint8_t gyroid = endstopMotor[motorNum][2];
-				uint8_t gyroid2 = endstopMotor[motorNum][4];
-				uint8_t axisid = endstopMotor[motorNum][3];
-				gyroval = (full_ypr[gyroid][axisid]) - (full_ypr[gyroid2][axisid]);
-				if(abs(destinationDeg-gyroval)>5)
+				gyroval[motorNum] = (full_ypr[gyroid[motorNum]][axisid[motorNum]]) - (full_ypr[gyroid2[motorNum]][axisid[motorNum]]);
+				if(abs(destinations[motorNum]-gyroval[motorNum])>5)
 				{
-					gyroval = (full_ypr[gyroid][axisid]) - (full_ypr[gyroid2][axisid]);
-					if(destinationDeg-gyroval<0){
-					direction = MOTOR_DIR_UP;
-					cout << "UP" << gyroval << endl;
+					if(destinations-gyroval[motorNum]<0){
+					direction[motorNum] = MOTOR_DIR_UP;
+					cout << "UP" << gyroval[motorNum] << endl;
 					}
-					else if(destinationDeg-gyroval>0){
-						direction = MOTOR_DIR_DOWN;
-						cout << "DOWN" << gyroval << endl;
+					else if(destinations-gyroval[motorNum]>0){
+						direction[motorNum] = MOTOR_DIR_DOWN;
+						cout << "DOWN" << gyroval[motorNum] << endl;
 					}
 					try {
 						if (digitalRead(endstopMotor[motorNum][direction])==LOW)
@@ -594,11 +598,6 @@ void *gyroAutoCorrection(void *) {
 							digitalWrite(motorPin[motorNum][1], direction);
 							digitalWrite(motorPin[motorNum][0], HIGH);
 						}
-						while(stopped == false && tmr.elapsed()<0.01 && digitalRead(endstopMotor[motorNum][direction])==LOW)
-						{
-							;
-						}
-						digitalWrite(motorPin[motorNum][0], LOW);
 					}
 					catch(string e){
 						emergencyStop();
@@ -606,6 +605,25 @@ void *gyroAutoCorrection(void *) {
 					}
 				}
 			}
+		}
+		tmr.reset();
+		while(stopped == false && tmr.elapsed()<0.01)
+		{
+			for (unsigned int motorNum=0; motorNum<MOTOR_COUNT; motorNum++)
+			{
+				if(goToDestination[motorNum])
+				{
+					if(digitalRead(endstopMotor[motorNum][direction[motorNum]])==LOW)
+					{
+						break;
+					}
+				}
+			}
+		}
+		for (unsigned int motorNum=0; motorNum<MOTOR_COUNT; motorNum++)
+		{
+			digitalWrite(motorPin[motorNum][0], LOW);
+			digitalWrite(motorPin[motorNum][1], LOW);
 		}
 		while(tmr2.elapsed()<1);
 	}
@@ -633,8 +651,9 @@ void *UDPServer(void *) {
 				unsigned int axisid = endstopMotor[motorNum][3];
 				degs[motorNum] = (full_ypr[gyroid][axisid]) - (full_ypr[gyroid2][axisid]);
 			}
+			stringstream timeBuffer;
 			time_t now = time(0);
-			char* dt = ctime(&now);
+			timeBuffer << put_time(&now, "%d.%m.%Y %H:%M:%S");
 			json jResponseObj;
 			jResponseObj["status"]=1;
 			jResponseObj["errorName"]="";
@@ -643,7 +662,6 @@ void *UDPServer(void *) {
 			jResponseObj["time"]=dt;
 			string jResponseString = jResponseObj.dump();
 			sendto(sockfd, jResponseString.c_str(), strlen(jResponseString.c_str()), MSG_CONFIRM, (const struct sockaddr *) &cliaddr, len);
-			cout << jResponseString.c_str();
 		}
 	}
 }
