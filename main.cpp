@@ -625,13 +625,21 @@ void *UDPServer(void *) {
 		auto jRequestObj = json::parse(jRequestString);
 		unsigned int type = jRequestObj["type"];
 		if(type==1){
+			float degs[MOTOR_COUNT];
+			for(unsigned int motorNum=0;motorNum<MOTOR_COUNT;motorNum++)
+			{
+				unsigned int gyroid = endstopMotor[motorNum][2];
+				unsigned int gyroid2 = endstopMotor[motorNum][4];
+				unsigned int axisid = endstopMotor[motorNum][3];
+				degs[motorNum] = (full_ypr[gyroid][axisid]) - (full_ypr[gyroid2][axisid]);
+			}
 			time_t now = time(0);
 			char* dt = ctime(&now);
 			json jResponseObj;
 			jResponseObj["status"]=1;
 			jResponseObj["errorName"]="";
 			jResponseObj["ypr"]=full_ypr;
-			jResponseObj["degs"]="";
+			jResponseObj["degs"]=degs;
 			jResponseObj["time"]=dt;
 			string jResponseString = jResponseObj.dump();
 			sendto(sockfd, jResponseString.c_str(), strlen(jResponseString.c_str()), MSG_CONFIRM, (const struct sockaddr *) &cliaddr, len);
@@ -641,12 +649,12 @@ void *UDPServer(void *) {
 }
 
 void loop() {
-	for(uint8_t x=0;x<MPU_COUNT+ICM_COUNT;x++)
+	/*for(uint8_t x=0;x<MPU_COUNT+ICM_COUNT;x++)
 	{
 		cout << "[" << (int)x << "]" << "     " << full_ypr[x][0] << " " << full_ypr[x][1] << " " << full_ypr[x][2] << "   ";
 	}
 	cout << endl;
-	delay(100);
+	delay(100);*/
 }
 
 int main() {
