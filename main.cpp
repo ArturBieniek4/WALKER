@@ -196,7 +196,7 @@ const uint8_t endstopPin[ENDSTOP_COUNT]{
 };
 
 const uint8_t endstopMotor[MOTOR_COUNT][5]{
-	{72,94,3,1,0},
+	{72,94,3,2,0},
 	{79,70,4,1,7},
 	{77,65,0,1,4},
 	{76,73,4,0,7},
