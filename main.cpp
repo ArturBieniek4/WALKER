@@ -569,7 +569,7 @@ unsigned int gyroid2[motorNum];
 unsigned int axisid[motorNum];
 
 void *gyroAutoCorrection(void *) {
-	for (unsigned int motorNum=0; motorNum<MOTOR_COUNT; motorNum++)
+	for (int motorNum=0; motorNum<MOTOR_COUNT; motorNum++)
 	{
 		gyroid[motorNum] = endstopMotor[motorNum][2];
 		gyroid2[motorNum] = endstopMotor[motorNum][4];
