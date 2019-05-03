@@ -613,7 +613,12 @@ void *gyroAutoCorrection(void *) {
 
 void *UDPServer(void *) {
 	while(true){
-		socklen_t len;
+		memset(&servaddr, 0, sizeof(servaddr));
+		memset(&cliaddr, 0, sizeof(cliaddr));
+		servaddr.sin_family = AF_INET;
+		servaddr.sin_addr.s_addr = INADDR_ANY;
+		servaddr.sin_port = htons(UDP_SERVER_PORT);
+		socklen_t len = sizeof(cliaddr);
 		int n = recvfrom(sockfd, (char *)udpBuffer, UDP_BUFFER_SIZE,  MSG_WAITALL, ( struct sockaddr *) &cliaddr, &len);
 		string s(udpBuffer);
 		string jRequestString = s.substr(0,n);
