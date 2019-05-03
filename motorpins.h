@@ -1,0 +1,29 @@
+#define MOTOR_S8 97
+#define MOTOR_S7 98
+#define MOTOR_S6 99
+#define MOTOR_S5 124
+#define MOTOR_S4 101
+#define MOTOR_S3 102
+#define MOTOR_S2 103
+#define MOTOR_S1 104
+#define MOTOR_S9 122
+
+#define MOTOR_K1 105
+#define MOTOR_K2 106
+#define MOTOR_K3 107
+#define MOTOR_K4 108
+#define MOTOR_K5 109
+#define MOTOR_K6 110
+#define MOTOR_K7 111
+#define MOTOR_K8 112
+#define MOTOR_K9 121
+
+#define MOTOR_P9 123
+#define MOTOR_P8 113
+#define MOTOR_P7 125
+#define MOTOR_P6 114
+#define MOTOR_P5 115
+#define MOTOR_P4 116
+#define MOTOR_P3 117
+#define MOTOR_P2 118
+#define MOTOR_P1 119
