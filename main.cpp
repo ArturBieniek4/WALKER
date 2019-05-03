@@ -663,6 +663,12 @@ void *UDPServer(void *) {
 			string jResponseString = jResponseObj.dump();
 			sendto(sockfd, jResponseString.c_str(), strlen(jResponseString.c_str()), MSG_CONFIRM, (const struct sockaddr *) &cliaddr, len);
 		}
+		else if(type==4)
+		{
+			cout << "PROGRAM EXIT...";
+			emergencyStop();
+			programExit=true;
+		}
 	}
 }
 
