@@ -625,12 +625,14 @@ void *UDPServer(void *) {
 		auto jRequestObj = json::parse(jRequestString);
 		unsigned int type = jRequestObj["type"];
 		if(type==1){
+			time_t now = time(0);
+			char* dt = ctime(&now);
 			json jResponseObj;
 			jResponseObj["status"]=1;
 			jResponseObj["errorName"]="";
 			jResponseObj["ypr"]="";
 			jResponseObj["degs"]="";
-			jResponseObj["time"]="";
+			jResponseObj["time"]=dt;
 			string jResponseString = jResponseObj.dump();
 			sendto(sockfd, jResponseString.c_str(), strlen(jResponseString.c_str()), MSG_CONFIRM, (const struct sockaddr *) &cliaddr, len);
 			cout << jResponseString.c_str();
