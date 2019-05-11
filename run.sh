@@ -4,4 +4,5 @@ git push -u origin master
 g++ off.cpp -o off -lwiringPi -O2 -W
 make -j4 && ./main
 sudo uhubctl -a on -p 2
+sleep 1
 ./off
