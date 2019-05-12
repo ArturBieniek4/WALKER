@@ -78,8 +78,8 @@
 
 #define MOTOR_COUNT 9
 
-#define MOTOR_DIR_UP LOW
-#define MOTOR_DIR_DOWN HIGH
+#define MOTOR_DIR_UP HIGH
+#define MOTOR_DIR_DOWN LOW
 
 using namespace std;
 using json = nlohmann::json;
