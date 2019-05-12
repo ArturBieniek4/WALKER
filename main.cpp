@@ -226,9 +226,8 @@ const int ypr_correction[MPU_COUNT + ICM_COUNT][3] = {
 	{0,0,0},
 	{0,0,0},
 	{0,0,0},
-	{0,0,0},
 	{-16,0,0},
-	{0,0,0}
+	{0,0,0},
 };
 
 float ypr[MPU_COUNT+ICM_COUNT][3];
