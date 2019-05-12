@@ -604,7 +604,9 @@ void *gyroAutoCorrection(void *) {
 			{
 				gyroval[motorNum] = (full_ypr[gyroid[motorNum]][axisid[motorNum]]) - (full_ypr[gyroid2[motorNum]][axisid[motorNum]]);
 				float diff = compareAngles(destinations[motorNum], gyroval[motorNum]);
+				float diff2 = destinations[motorNum] - gyroval[motorNum];
 				cout << "diff=" << diff << endl;
+				cout << "diff2=" << diff2 << endl;
 				if(abs(diff)>5)
 				{
 					if(diff<0){
