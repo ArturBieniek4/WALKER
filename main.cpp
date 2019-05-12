@@ -669,7 +669,7 @@ void *UDPServer(void *) {
 				unsigned int gyroid = endstopMotor[motorNum][2];
 				unsigned int gyroid2 = endstopMotor[motorNum][4];
 				unsigned int axisid = endstopMotor[motorNum][3];
-				degs[motorNum] = (full_ypr[gyroid][axisid]) - (full_ypr[gyroid2][axisid]);
+				degs[motorNum] = compareAngles((full_ypr[gyroid][axisid]) , (full_ypr[gyroid2][axisid]));
 			}
 			stringstream timeBuffer;
 			time_t now = time(0);
