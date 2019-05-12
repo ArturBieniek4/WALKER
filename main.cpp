@@ -617,7 +617,7 @@ void *gyroAutoCorrection(void *) {
 			}
 		}
 		tmr.reset();
-		while(stopped == false && tmr.elapsed()<0.5)
+		while(stopped == false && tmr.elapsed()<0.01)
 		{
 			for (unsigned int motorNum=0; motorNum<MOTOR_COUNT; motorNum++)
 			{
@@ -629,35 +629,6 @@ void *gyroAutoCorrection(void *) {
 					}
 				}
 			}
-			
-		for (unsigned int motorNum=0; motorNum<MOTOR_COUNT; motorNum++)
-		{
-			if(goToDestination[motorNum])
-			{
-				gyroval[motorNum] = (full_ypr[gyroid[motorNum]][axisid[motorNum]]) - (full_ypr[gyroid2[motorNum]][axisid[motorNum]]);
-				if(abs(destinations[motorNum]-gyroval[motorNum])>5)
-				{
-					if(destinations[motorNum]-gyroval[motorNum]<0){
-					direction[motorNum] = MOTOR_DIR_UP;
-					cout << "UP" << gyroval[motorNum] << endl;
-					}
-					else if(destinations[motorNum]-gyroval[motorNum]>0){
-						direction[motorNum] = MOTOR_DIR_DOWN;
-						cout << "DOWN" << gyroval[motorNum] << endl;
-					}
-					try {
-						if (digitalRead(endstopMotor[motorNum][direction[motorNum]])==LOW)
-						{
-							digitalWrite(motorPin[motorNum][1], direction[motorNum]);
-						}
-					}
-					catch(string e){
-						emergencyStop();
-						cout << endl << "EXCEPTION: " << e;
-					}
-				}
-			}
-		}
 			
 		}
 		for (unsigned int motorNum=0; motorNum<MOTOR_COUNT; motorNum++)
