@@ -250,13 +250,10 @@ void emergencyStop()
 
 float compareAngles(float x, float y)
 {
-	float tau = 2*M_PI;
-	float a = fmod((x - y) , tau);
-	float b = fmod((y - x) , tau);
-	if(a<b)
-		return -a;
-	else
-		return b;
+	float difference = y - x;
+    while (difference < -180) difference += 360;
+    while (difference > 180) difference -= 360;
+    return difference;
 }
 
 void setup() {
