@@ -635,7 +635,7 @@ void *gyroAutoCorrection(void *) {
 			digitalWrite(motorPin[motorNum][0], LOW);
 			digitalWrite(motorPin[motorNum][1], LOW);
 		}
-		while(tmr2.elapsed()<1);
+		while(tmr2.elapsed()<0.100);
 	}
 }
 
