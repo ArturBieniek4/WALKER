@@ -248,6 +248,11 @@ void emergencyStop()
 	cout << "EMERGENCY_STOP!!!" << endl;
 }
 
+float compareAngles(float x, float y)
+{
+	atan2(sin(x-y), cos(x-y));
+}
+
 void setup() {
 	configini.read(iniconfig);
 	wiringPiSetup();
@@ -594,13 +599,14 @@ void *gyroAutoCorrection(void *) {
 				gyroval[motorNum] = (full_ypr[gyroid[motorNum]][axisid[motorNum]]) - (full_ypr[gyroid2[motorNum]][axisid[motorNum]]);
 				if(abs(destinations[motorNum]-gyroval[motorNum])>5)
 				{
-					if(destinations[motorNum]-gyroval[motorNum]<0){
-					direction[motorNum] = MOTOR_DIR_UP;
-					cout << "UP" << gyroval[motorNum] << endl;
+					float diff = compareAngles(destinations[motorNum], gyroval[motorNum]);
+					if(diff<0){
+						direction[motorNum] = MOTOR_DIR_UP;
+						cout << "UP" << diff << endl;
 					}
-					else if(destinations[motorNum]-gyroval[motorNum]>0){
+					else if(diff>0){
 						direction[motorNum] = MOTOR_DIR_DOWN;
-						cout << "DOWN" << gyroval[motorNum] << endl;
+						cout << "DOWN" << diff << endl;
 					}
 					try {
 						if (digitalRead(endstopMotor[motorNum][direction[motorNum]])==LOW)
