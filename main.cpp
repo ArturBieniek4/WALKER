@@ -110,6 +110,7 @@ private:
 
 Timer tmr;
 Timer tmr2;
+Timer tmr3;
 
 mINI::INIFile configini("config.ini");
 mINI::INIStructure iniconfig;
@@ -490,7 +491,7 @@ void *consoleInput(void *) {
 			motorNum = (instr[1]-'0');
 			if(stopped) continue;
 			if(digitalRead(endstopMotor[motorNum][direction])==HIGH) continue;
-			tmr.reset();
+			tmr3.reset();
 			try {
 				if (digitalRead(endstopMotor[motorNum][direction])==LOW)
 						{
@@ -503,7 +504,7 @@ void *consoleInput(void *) {
 				char dirid = (direction==MOTOR_DIR_DOWN) ? 'd' : 'u';
 				string inireg = "motor" + to_string(motorNum) + "ypr" + to_string(axisid) + dirid;
 				string inival = "0";
-				while(stopped == false && tmr.elapsed()<0.5 && digitalRead(endstopMotor[motorNum][direction])==LOW)
+				while(stopped == false && tmr3.elapsed()<0.1 && digitalRead(endstopMotor[motorNum][direction])==LOW)
 				{
 					//float gyroval;
 					//inival=iniconfig["gyro_endstop"][inireg];
