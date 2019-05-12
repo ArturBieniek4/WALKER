@@ -505,9 +505,9 @@ void *consoleInput(void *) {
 				string inival = "0";
 				while(stopped == false && tmr.elapsed()<0.5 && digitalRead(endstopMotor[motorNum][direction])==LOW)
 				{
-					float gyroval;
+					//float gyroval;
 					//inival=iniconfig["gyro_endstop"][inireg];
-					gyroval = (full_ypr[gyroid][axisid]) - (full_ypr[gyroid2][axisid]);
+					//gyroval = (full_ypr[gyroid][axisid]) - (full_ypr[gyroid2][axisid]);
 					/*if(inival!="")
 					{
 						if(abs(atof(inival.c_str())-gyroval)<5){
