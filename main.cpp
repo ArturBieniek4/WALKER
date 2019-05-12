@@ -250,7 +250,7 @@ void emergencyStop()
 
 float compareAngles(float x, float y)
 {
-	atan2(sin(x-y), cos(x-y));
+	return atan2(sin(x-y), cos(x-y));
 }
 
 void setup() {
