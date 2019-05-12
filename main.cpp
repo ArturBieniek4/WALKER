@@ -508,13 +508,13 @@ void *consoleInput(void *) {
 					float gyroval;
 					//inival=iniconfig["gyro_endstop"][inireg];
 					gyroval = (full_ypr[gyroid][axisid]) - (full_ypr[gyroid2][axisid]);
-					if(inival!="")
+					/*if(inival!="")
 					{
 						if(abs(atof(inival.c_str())-gyroval)<5){
 						cout << "TRIGERRED FROM GYRO" << endl;
 						break;
 						}
-					}
+					}*/
 					
 				}
 				digitalWrite(motorPin[motorNum][0], LOW);
