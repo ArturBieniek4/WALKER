@@ -504,7 +504,7 @@ void *consoleInput(void *) {
 				char dirid = (direction==MOTOR_DIR_DOWN) ? 'd' : 'u';
 				string inireg = "motor" + to_string(motorNum) + "ypr" + to_string(axisid) + dirid;
 				string inival = "0";
-				while(stopped == false && tmr3.elapsed()<0.1 && digitalRead(endstopMotor[motorNum][direction])==LOW)
+				while(stopped == false && tmr3.elapsed()<0.5 && digitalRead(endstopMotor[motorNum][direction])==LOW)
 				{
 					//float gyroval;
 					//inival=iniconfig["gyro_endstop"][inireg];
