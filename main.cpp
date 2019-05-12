@@ -605,11 +605,11 @@ void *gyroAutoCorrection(void *) {
 				{
 					if(diff<0){
 						direction[motorNum] = MOTOR_DIR_UP;
-						cout << "UP" << gyroval[motorNum] << endl;
+						cout << "UP" << full_ypr[gyroid[motorNum]][axisid[motorNum]] << " " << full_ypr[gyroid2[motorNum]][axisid[motorNum]] << endl;
 					}
 					else if(diff>0){
 						direction[motorNum] = MOTOR_DIR_DOWN;
-						cout << "DOWN" << gyroval[motorNum] << endl;
+						cout << "DOWN" << full_ypr[gyroid[motorNum]][axisid[motorNum]] << " " << full_ypr[gyroid2[motorNum]][axisid[motorNum]] << endl;
 					}
 					try {
 						if (digitalRead(endstopMotor[motorNum][direction[motorNum]])==LOW)
