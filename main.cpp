@@ -599,17 +599,17 @@ void *gyroAutoCorrection(void *) {
 		{
 			if(goToDestination[motorNum])
 			{
-				gyroval[motorNum] = (full_ypr[gyroid[motorNum]][axisid[motorNum]]) - (full_ypr[gyroid2[motorNum]][axisid[motorNum]]);
+				gyroval[motorNum] = compareAngles((full_ypr[gyroid[motorNum]][axisid[motorNum]]) , (full_ypr[gyroid2[motorNum]][axisid[motorNum]]));
 				float diff = compareAngles(destinations[motorNum], gyroval[motorNum]);
 				if(abs(diff)>5)
 				{
 					if(diff<0){
 						direction[motorNum] = MOTOR_DIR_UP;
-						cout << "UP" << diff << endl;
+						cout << "UP" << gyroval << endl;
 					}
 					else if(diff>0){
 						direction[motorNum] = MOTOR_DIR_DOWN;
-						cout << "DOWN" << diff << endl;
+						cout << "DOWN" << gyroval << endl;
 					}
 					try {
 						if (digitalRead(endstopMotor[motorNum][direction[motorNum]])==LOW)
