@@ -504,7 +504,7 @@ void *consoleInput(void *) {
 				char dirid = (direction==MOTOR_DIR_DOWN) ? 'd' : 'u';
 				string inireg = "motor" + to_string(motorNum) + "ypr" + to_string(axisid) + dirid;
 				string inival = "0";
-				while(stopped == false && tmr3.elapsed()<2 && digitalRead(endstopMotor[motorNum][direction])==LOW)
+				while(stopped == false && tmr3.elapsed()<0.1 && digitalRead(endstopMotor[motorNum][direction])==LOW)
 				{
 					//float gyroval;
 					//inival=iniconfig["gyro_endstop"][inireg];
@@ -643,8 +643,11 @@ void *gyroAutoCorrection(void *) {
 		}
 		for (unsigned int motorNum=0; motorNum<MOTOR_COUNT; motorNum++)
 		{
-			digitalWrite(motorPin[motorNum][0], LOW);
-			digitalWrite(motorPin[motorNum][1], LOW);
+			if(goToDestination[motorNum])
+			{
+				digitalWrite(motorPin[motorNum][0], LOW);
+				digitalWrite(motorPin[motorNum][1], LOW);
+			}
 		}
 		//while(tmr2.elapsed()<0.100);
 	}
