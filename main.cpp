@@ -219,6 +219,18 @@ const uint8_t motorPin[MOTOR_COUNT][3] = {
 	{122,121,123},//motor9
 };
 
+const int ypr_correction[MPU_COUNT + ICM_COUNT][3] = {
+	{0,0,0},
+	{0,0,0},
+	{0,0,0},
+	{0,0,0},
+	{0,0,0},
+	{0,0,0},
+	{0,0,0},
+	{-16,0,0},
+	{0,0,0}
+};
+
 float ypr[MPU_COUNT+ICM_COUNT][3];
 float full_ypr[MPU_COUNT+ICM_COUNT][3];
 
@@ -364,9 +376,9 @@ void *readMPU(void *) {
 		{
 			pthread_mutex_lock(&mutex_ypr);
 			pthread_mutex_lock(&mutex_full_ypr);
-			full_ypr[x][0] = ypr[x][0];
-			full_ypr[x][1] = ypr[x][1];
-			full_ypr[x][2] = ypr[x][2];
+			full_ypr[x][0] = ypr[x][0] + ypr_correction[x][0];
+			full_ypr[x][1] = ypr[x][1] + ypr_correction[x][1];
+			full_ypr[x][2] = ypr[x][2] + ypr_correction[x][2];
 			pthread_mutex_unlock(&mutex_full_ypr);
 			pthread_mutex_unlock(&mutex_ypr);
 		}
@@ -389,7 +401,7 @@ void *readUno(void *){
 			if(tokens[0]=="#1"){
 			for(unsigned int i = 1; i < tokens.size(); i++){
 					pthread_mutex_lock(&mutex_full_ypr);
-					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+2][i-1] = atof(tokens[i].c_str());
+					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+2][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+2][i-1];
 					pthread_mutex_unlock(&mutex_full_ypr);
 			}
 			}
@@ -397,7 +409,7 @@ void *readUno(void *){
 			else if(tokens[0]=="#2"){
 			for(unsigned int i = 1; i < tokens.size(); i++){
 					pthread_mutex_lock(&mutex_full_ypr);
-					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+3][i-1] = atof(tokens[i].c_str());
+					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+3][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+3][i-1];
 					pthread_mutex_unlock(&mutex_full_ypr);
 			}
 			}
@@ -425,7 +437,7 @@ void *readMega(void *){
 			if(tokens[0]=="#1"){
 			for(unsigned int i = 1; i < tokens.size(); i++){
 					pthread_mutex_lock(&mutex_full_ypr);
-					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+0][i-1] = atof(tokens[i].c_str());
+					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+0][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+0][i-1];
 					pthread_mutex_unlock(&mutex_full_ypr);
 			}
 			}
@@ -433,7 +445,7 @@ void *readMega(void *){
 			else if(tokens[0]=="#2"){
 			for(unsigned int i = 1; i < tokens.size(); i++){
 					pthread_mutex_lock(&mutex_full_ypr);
-					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+1][i-1] = atof(tokens[i].c_str());
+					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+1][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+1][i-1];
 					pthread_mutex_unlock(&mutex_full_ypr);
 			}
 			}
