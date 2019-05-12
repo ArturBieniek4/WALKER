@@ -251,8 +251,8 @@ void emergencyStop()
 float compareAngles(float x, float y)
 {
 	float tau = 2*M_PI;
-	float a = (x - y) % tau;
-	float b = (y - x) % tau;
+	float a = fmod((x - y) , tau);
+	float b = fmod((y - x) , tau);
 	if(a<b)
 		return -a;
 	else
