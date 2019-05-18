@@ -471,11 +471,6 @@ void *consoleInput(void *) {
 		cin >> instr;
 		uint8_t direction = LOW;
 		uint8_t motorNum;
-		if(instr=="x"){
-			cout << "PROGRAM EXIT..." << endl;
-			emergencyStop();
-			exit(0);
-		}
 		if(instr.length()==2)
 		{
 			if(instr[0]=='u'){
@@ -542,28 +537,6 @@ void *consoleInput(void *) {
 		}
 		else if(instr.length()>=3)
 		{
-			string saveNum = "save" + instr.substr(1);
-			if(instr[0]=='s'){
-				for(uint8_t x=0;x<MPU_COUNT+ICM_COUNT;x++)
-				{
-					for(uint8_t y=0;y<3;y++)
-					{
-						string inireg = "gyro" + to_string(x) + "ypr" + to_string(y);
-						string gyroVal = to_string(full_ypr[x][y]);
-						iniconfig[saveNum][inireg] = gyroVal;
-					}
-				}
-				configini.write(iniconfig);
-			}
-			if(instr[0]=='l'){
-				if(iniconfig.has(saveNum))
-				{
-					
-				}
-				else{
-					cout << "SAVE DOES NOT EXIST!" << endl;
-				}
-			}
 			if(instr[0]=='g')
 			{
 				if(instr[1]=='f')
