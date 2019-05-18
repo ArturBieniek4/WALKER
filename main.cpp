@@ -631,6 +631,14 @@ void *UDPServer(void *) {
 			string jResponseString = jResponseObj.dump();
 			sendto(sockfd, jResponseString.c_str(), strlen(jResponseString.c_str()), MSG_CONFIRM, (const struct sockaddr *) &cliaddr, len);
 		}
+		else if(type==2)
+		{
+			float recvDest[9] = jRequestObj["destinations"]
+			for(unsigned int i = 0; i<=MOTOR_COUNT; i++)
+			{
+				destinations[i] = recvDest[i];
+			}
+		}
 		else if(type==4)
 		{
 			cout << "PROGRAM EXIT..." << endl;
