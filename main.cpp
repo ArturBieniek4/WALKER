@@ -633,11 +633,25 @@ void *UDPServer(void *) {
 		}
 		else if(type==2)
 		{
-			for(unsigned int i = 0; i<=MOTOR_COUNT; i++)
-			{
-				//destinations[i] = jRequestObj["destinations"][i];
-				goToDestination[i] = jRequestObj["goToDest"][i];
-			}
+			goToDestination[0] = jRequestObj["goToDest1"];
+			goToDestination[1] = jRequestObj["goToDest2"];
+			goToDestination[2] = jRequestObj["goToDest3"];
+			goToDestination[3] = jRequestObj["goToDest4"];
+			goToDestination[4] = jRequestObj["goToDest5"];
+			goToDestination[5] = jRequestObj["goToDest6"];
+			goToDestination[6] = jRequestObj["goToDest7"];
+			goToDestination[7] = jRequestObj["goToDest8"];
+			goToDestination[8] = jRequestObj["goToDest9"];
+			
+			destinations[0] = jRequestObj["destination1"];
+			destinations[1] = jRequestObj["destination2"];
+			destinations[2] = jRequestObj["destination3"];
+			destinations[3] = jRequestObj["destination4"];
+			destinations[4] = jRequestObj["destination5"];
+			destinations[5] = jRequestObj["destination6"];
+			destinations[6] = jRequestObj["destination7"];
+			destinations[7] = jRequestObj["destination8"];
+			destinations[8] = jRequestObj["destination9"];
 		}
 		else if(type==4)
 		{
