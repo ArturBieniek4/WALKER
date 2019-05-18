@@ -659,6 +659,7 @@ void loop() {
 	}
 	cout << endl;
 	delay(100);*/
+	usleep(60000000);
 }
 
 int main() {
