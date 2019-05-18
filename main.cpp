@@ -677,9 +677,9 @@ int main() {
 	cout << "Arduino Mega thread started[OK]" << endl;
 	//pthread_create(&t_console, NULL, consoleInput, NULL);
 	cout << "Console input thread started[OK]" << endl;
-	pthread_create(&t_autocorrection, NULL, gyroAutoCorrection, NULL);
+	//pthread_create(&t_autocorrection, NULL, gyroAutoCorrection, NULL);
 	cout << "Gyro Auto Correction thread started[OK]" << endl;
-	//pthread_create(&t_udpserver, NULL, UDPServer, NULL);
+	pthread_create(&t_udpserver, NULL, UDPServer, NULL);
 	cout << "UDP Server thread started[OK]" << endl;
 	//pthread_detach(t_uno);
 	cout << "Arduino Uno thread detached[OK]" << endl;
@@ -689,9 +689,9 @@ int main() {
 	cout << "MPU6050 thread detached[OK]" << endl;
 	//pthread_detach(t_console);
 	cout << "Console input thread detached[OK]" << endl;
-	pthread_detach(t_autocorrection);
+	//pthread_detach(t_autocorrection);
 	cout << "Gyro Auto Correction thread started[OK]" << endl;
-	//pthread_detach(t_udpserver);
+	pthread_detach(t_udpserver);
 	cout << "UDP Server thread detached[OK]" << endl;
 	cout << "Starting the main loop..." << endl;
     while(true) {
