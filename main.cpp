@@ -633,7 +633,7 @@ void *UDPServer(void *) {
 		}
 		else if(type==2)
 		{
-			float recvDest[9] = jRequestObj["destinations"]
+			float recvDest[9] = jRequestObj["destinations"];
 			for(unsigned int i = 0; i<=MOTOR_COUNT; i++)
 			{
 				destinations[i] = recvDest[i];
