@@ -307,14 +307,14 @@ void setup() {
 	if ((USB0 = serialOpen ("/dev/ttyUSB0", 115200)) < 0)
 	{
 		cout << "Unable to open serial device USB0";
-		emergencyStop();
-		exit(0);
+		/*emergencyStop();
+		exit(0);*/
 	}
 	if ((USB1 = serialOpen ("/dev/ttyUSB1", 115200)) < 0)
 	{
 		cout << "Unable to open serial device USB1";
-		emergencyStop();
-		exit(0);
+		/*emergencyStop();
+		exit(0);*/
 	}
 	// MPU6050 initialization
 	for(uint8_t x=0;x<MPU_COUNT;x++)
