@@ -254,7 +254,6 @@ float compareAngles(float x, float y)
 }
 
 void setup() {
-	configini.read(iniconfig);
 	wiringPiSetup();
 	pinMode(EMERGENCY_STOP_PIN, INPUT);
 	pullUpDnControl(EMERGENCY_STOP_PIN, PUD_UP);
@@ -495,8 +494,6 @@ void *consoleInput(void *) {
 				uint8_t gyroid2 = endstopMotor[motorNum][4];
 				uint8_t axisid = endstopMotor[motorNum][3];
 				char dirid = (direction==MOTOR_DIR_DOWN) ? 'd' : 'u';
-				string inireg = "motor" + to_string(motorNum) + "ypr" + to_string(axisid) + dirid;
-				string inival = "0";
 				while(stopped == false && tmr3.elapsed()<0.1 && digitalRead(endstopMotor[motorNum][direction])==LOW)
 				{
 					//float gyroval;
@@ -523,9 +520,6 @@ void *consoleInput(void *) {
 						gyroval = (full_ypr[gyroid][axisid] - full_ypr[gyroid2][axisid]);
 					}
 					cout << inireg;
-					inival = to_string(gyroval);
-					iniconfig["gyro_endstop"][inireg] = inival;
-					configini.write(iniconfig);
 				}
 			}
 			catch(string e){
