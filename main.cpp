@@ -636,7 +636,7 @@ void *UDPServer(void *) {
 			for(unsigned int i = 0; i<=MOTOR_COUNT; i++)
 			{
 				destinations[i] = jRequestObj["destinations"][i];
-				goToDestination[i] = jRequestObj["goToDest"][i];
+				//goToDestination[i] = jRequestObj["goToDest"][i];
 			}
 		}
 		else if(type==4)
