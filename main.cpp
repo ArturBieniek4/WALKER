@@ -576,7 +576,7 @@ void *gyroAutoCorrection(void *) {
 				digitalWrite(motorPin[motorNum][1], LOW);
 			}
 		}
-		usleep(abs(gyroCorrectionDelay-tmr2.elapsed())*1 000 000);
+		usleep(abs((gyroCorrectionDelay-tmr2.elapsed())*1 000 000));
 	}
 }
 
