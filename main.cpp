@@ -135,8 +135,10 @@ bool readComplete[MPU_COUNT+ICM_COUNT];
 uint8_t readCompleteCount;
 bool stopped;
 
+
 float gyroCorrectionTime = 0.01;
 float gyroCorrectionDelay = 0.1;
+bool verboseMode = false;
 
 const uint8_t pinBase=65;
 const uint8_t expanderAddr[EXPANDER_COUNT] = {
@@ -498,7 +500,7 @@ void *consoleInput(void *) {
 				digitalWrite(motorPin[motorNum][0], LOW);
 				if(digitalRead(endstopMotor[motorNum][direction])==HIGH)
 				{
-					cout << "TRIGERRED FROM ENDSTOP" << endl;
+					if(verboseMode) cout << "TRIGERRED FROM ENDSTOP" << endl;
 				}
 			}
 			catch(string e){
@@ -533,11 +535,11 @@ void *gyroAutoCorrection(void *) {
 				{
 					if(diff<0){
 						direction[motorNum] = MOTOR_DIR_UP;
-						cout << "UP" << full_ypr[gyroid[motorNum]][axisid[motorNum]] << " " << full_ypr[gyroid2[motorNum]][axisid[motorNum]] << endl;
+						if(verboseMode) cout << "UP" << full_ypr[gyroid[motorNum]][axisid[motorNum]] << " " << full_ypr[gyroid2[motorNum]][axisid[motorNum]] << endl;
 					}
 					else if(diff>0){
 						direction[motorNum] = MOTOR_DIR_DOWN;
-						cout << "DOWN" << full_ypr[gyroid[motorNum]][axisid[motorNum]] << " " << full_ypr[gyroid2[motorNum]][axisid[motorNum]] << endl;
+						if(verboseMode) cout << "DOWN" << full_ypr[gyroid[motorNum]][axisid[motorNum]] << " " << full_ypr[gyroid2[motorNum]][axisid[motorNum]] << endl;
 					}
 					try {
 						if (digitalRead(endstopMotor[motorNum][direction[motorNum]])==LOW)
@@ -648,6 +650,7 @@ void *UDPServer(void *) {
 		{
 			gyroCorrectionTime = jRequestObj["correctionTime"];
 			gyroCorrectionDelay = jRequestObj["correctionDelay"];
+			verboseMode = jRequestObj["verboseMode"];
 		}
 	}
 }
