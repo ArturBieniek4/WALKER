@@ -22,7 +22,6 @@
 #include <vector>
 #include <fstream>
 #include <iomanip>
-#include "ini.h"
 #include "json.hpp"
 
 #include "MPU6050.h"
@@ -111,9 +110,6 @@ private:
 Timer tmr;
 Timer tmr2;
 Timer tmr3;
-
-mINI::INIFile configini("config.ini");
-mINI::INIStructure iniconfig;
 
 int sockfd;
 char udpBuffer[UDP_BUFFER_SIZE];
@@ -312,12 +308,14 @@ void setup() {
 	if ((USB0 = serialOpen ("/dev/ttyUSB0", 115200)) < 0)
 	{
 		cout << "Unable to open serial device USB0";
-		return;
+		emergencyStop();
+		exit(0);
 	}
 	if ((USB1 = serialOpen ("/dev/ttyUSB1", 115200)) < 0)
 	{
 		cout << "Unable to open serial device USB1";
-		return;
+		emergencyStop();
+		exit(0);
 	}
 	// MPU6050 initialization
 	for(uint8_t x=0;x<MPU_COUNT;x++)
