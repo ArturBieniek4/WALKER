@@ -135,7 +135,8 @@ bool readComplete[MPU_COUNT+ICM_COUNT];
 uint8_t readCompleteCount;
 bool stopped;
 
-bool programExit = false;
+float gyroCorrectionTime = 0.01;
+float gyroCorrectionDelay = 0.1;
 
 const uint8_t pinBase=65;
 const uint8_t expanderAddr[EXPANDER_COUNT] = {
@@ -505,23 +506,6 @@ void *consoleInput(void *) {
 				cout << endl << "EXCEPTION: " << e;
 			}
 		}
-		else if(instr.length()>=3)
-		{
-			if(instr[0]=='g')
-			{
-				if(instr[1]=='f')
-				{
-					unsigned int motorNum = atoi(instr.substr(2).c_str());
-					goToDestination[motorNum] = false;
-				}
-				else {
-					unsigned int motorNum = instr[1]-'0';
-					float deg = atof(instr.substr(2).c_str());
-					destinations[motorNum] = deg;
-					goToDestination[motorNum] = true;
-				}
-			}
-		}
 	}
 }
 
@@ -570,7 +554,7 @@ void *gyroAutoCorrection(void *) {
 			}
 		}
 		tmr.reset();
-		while(stopped == false && tmr.elapsed()<0.01)
+		while(stopped == false && tmr.elapsed()<gyroCorrectionTime)
 		{
 			for (unsigned int motorNum=0; motorNum<MOTOR_COUNT; motorNum++)
 			{
@@ -592,7 +576,7 @@ void *gyroAutoCorrection(void *) {
 				digitalWrite(motorPin[motorNum][1], LOW);
 			}
 		}
-		//while(tmr2.elapsed()<0.100);
+		while(tmr2.elapsed()<gyroCorrectionDelay);
 	}
 }
 
@@ -658,6 +642,11 @@ void *UDPServer(void *) {
 			cout << "PROGRAM EXIT..." << endl;
 			emergencyStop();
 			exit(0);
+		}
+		else if(type==5)
+		{
+			gyroCorrectionTime = jRequestObj["correctionTime"];
+			gyroCorrectionDelay = jRequestObj["correctionDelay"];
 		}
 	}
 }
