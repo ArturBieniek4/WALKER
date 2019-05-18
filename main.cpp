@@ -577,7 +577,7 @@ void *gyroAutoCorrection(void *) {
 			}
 		}
 		
-		usleep(abs(gyroCorrectionDelay-(tmr2.elapsed()))*1000000);
+		usleep((gyroCorrectionDelay-tmr2.elapsed())*1000000);
 	}
 }
 
