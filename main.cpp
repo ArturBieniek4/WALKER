@@ -493,7 +493,6 @@ void *consoleInput(void *) {
 				uint8_t gyroid = endstopMotor[motorNum][2];
 				uint8_t gyroid2 = endstopMotor[motorNum][4];
 				uint8_t axisid = endstopMotor[motorNum][3];
-				char dirid = (direction==MOTOR_DIR_DOWN) ? 'd' : 'u';
 				while(stopped == false && tmr3.elapsed()<0.1 && digitalRead(endstopMotor[motorNum][direction])==LOW)
 				{
 					//float gyroval;
@@ -519,7 +518,6 @@ void *consoleInput(void *) {
 					else {
 						gyroval = (full_ypr[gyroid][axisid] - full_ypr[gyroid2][axisid]);
 					}
-					cout << inireg;
 				}
 			}
 			catch(string e){
