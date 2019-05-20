@@ -230,7 +230,7 @@ const int ypr_correction[MPU_COUNT + ICM_COUNT][3] = {
 	{0,0,0}
 };
 
-unsigned int motorDir[MOTOR_COUNT][2]
+const unsigned int motorDir[MOTOR_COUNT][2]
 {
 	{LOW,HIGH}, // P1 ..   Z
 	{LOW,HIGH}, // P2 .    Z
@@ -547,11 +547,11 @@ void *gyroAutoCorrection(void *) {
 				if(abs(diff)>5)
 				{
 					if(diff<0){
-						direction[motorNum] = direction = motorDir[motorNum][0];
+						direction[motorNum] = motorDir[motorNum][0];
 						if(verboseMode) cout << "UP" << full_ypr[gyroid[motorNum]][axisid[motorNum]] << " " << full_ypr[gyroid2[motorNum]][axisid[motorNum]] << endl;
 					}
 					else if(diff>0){
-						direction[motorNum] = direction = motorDir[motorNum][1];
+						direction[motorNum]  = motorDir[motorNum][1];
 						if(verboseMode) cout << "DOWN" << full_ypr[gyroid[motorNum]][axisid[motorNum]] << " " << full_ypr[gyroid2[motorNum]][axisid[motorNum]] << endl;
 					}
 					try {
