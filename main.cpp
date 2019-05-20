@@ -195,15 +195,15 @@ const uint8_t endstopPin[ENDSTOP_COUNT]{
 };
 
 const uint8_t endstopMotor[MOTOR_COUNT][5]{ // krańcówka góra,krańcówka dół,gyro 1,oś gyro, gyro 2
-	{112,98,3,2,0}, // P1 ..   Z
-	{103,100,4,2,7},  // P2 .    Z
-	{106,104,0,2,4},  // P3 ...  Z
+	{98,112,3,2,0}, // P1 ..   Z
+	{100,103,4,2,7},  // P2 .    Z
+	{104,106,0,2,4},  // P3 ...  Z
 	{108,81,4,0,7},  // P4 .... Z 
-	{105,107,2,2,5},  // P5 ...  C
-	{110,111,1,2,2},  // P6 ..   C
+	{107,105,2,2,5},  // P5 ...  C
+	{111,110,1,2,2},  // P6 ..   C
 	{109,97,6,0,7},  // P7      G 
-	{101,102,5,2,7},  // P8 .    C
-	{99,82,5,0,7}   // P9 .... C
+	{102,101,5,2,7},  // P8 .    C
+	{82,99,5,0,7}   // P9 .... C
 };
 
 const uint8_t motorPin[MOTOR_COUNT][2] = { // S,K
@@ -231,14 +231,14 @@ const int ypr_correction[MPU_COUNT + ICM_COUNT][3] = {
 
 const unsigned int motorDir[MOTOR_COUNT][2]
 {
-	{HIGH,LOW}, // P1 ..   Z
-	{HIGH,LOW}, // P2 .    Z
-	{HIGH,LOW}, // P3 ...  Z
+	{LOW,HIGH}, // P1 ..   Z
+	{LOW,HIGH}, // P2 .    Z
+	{LOW,HIGH}, // P3 ...  Z
 	{HIGH,LOW}, // P4 .... Z
-	{LOW,HIGH}, // P5 ...  C
-	{LOW,HIGH}, // P6 ..   C
+	{HIGH,LOW}, // P5 ...  C
+	{HIGH,LOW}, // P6 ..   C
 	{LOW,HIGH}, // P7      G
-	{LOW,HIGH}, // P8 .    C
+	{HIGH,LOW}, // P8 .    C
 	{HIGH,LOW}  // P9 .... C
 };
 
