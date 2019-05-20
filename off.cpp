@@ -38,7 +38,7 @@ int main() {
 	{
 		mcp23017Setup(pinBase+16*x, expanderAddr[x]);
 	}
-	for(uint8_t y=0;y<3;y++)
+	for(uint8_t y=0;y<2;y++)
 	{
 		for(uint8_t x=0;x<MOTOR_COUNT;x++)
 		{
