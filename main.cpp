@@ -251,7 +251,7 @@ int USB0, USB1;
 void emergencyStop()
 {
 	stopped=true;
-	for(uint8_t y=0;y<3;y++)
+	for(uint8_t y=0;y<2;y++)
 	{
 		for(uint8_t x=0;x<MOTOR_COUNT;x++)
 		{
@@ -299,7 +299,7 @@ void setup() {
 	}
 	for(uint8_t x=pinBase;x<pinBase+EXPANDER_PIN_COUNT;x++)
 	{
-		for(uint8_t y=0;y<3;y++)
+		for(uint8_t y=0;y<2;y++)
 		{
 			for(uint8_t x=0;x<MOTOR_COUNT;x++)
 			{
@@ -313,7 +313,7 @@ void setup() {
 		pullUpDnControl(endstopPin[x], PUD_UP);
 		cout << "ENDSTOP[" << (int)endstopPin[x] << "] = " << (int)digitalRead(endstopPin[x]) << endl;
 	}
-	for(uint8_t y=0;y<3;y++)
+	for(uint8_t y=0;y<2;y++)
 	{
 		for(uint8_t x=0;x<MOTOR_COUNT;x++)
 		{
