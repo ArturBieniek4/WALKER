@@ -198,12 +198,12 @@ const uint8_t endstopMotor[MOTOR_COUNT][5]{ // krańcówka góra,krańcówka dó
 	{98,112,3,2,0}, // P1 ..   Z
 	{100,103,4,2,7},  // P2 .    Z
 	{104,106,0,2,4},  // P3 ...  Z
-	{81,108,4,0,7},  // P4 .... Z 
+	{108,81,4,0,7},  // P4 .... Z 
 	{107,105,2,2,5},  // P5 ...  C
 	{111,110,1,2,2},  // P6 ..   C
 	{109,97,6,0,7},  // P7      G 
 	{102,101,5,2,7},  // P8 .    C
-	{99,82,5,0,7}   // P9 .... C
+	{82,99,5,0,7}   // P9 .... C
 };
 
 const uint8_t motorPin[MOTOR_COUNT][2] = { // S,K
@@ -234,12 +234,12 @@ const unsigned int motorDir[MOTOR_COUNT][2]
 	{LOW,HIGH}, // P1 ..   Z
 	{LOW,HIGH}, // P2 .    Z
 	{LOW,HIGH}, // P3 ...  Z
-	{LOW,HIGH}, // P4 .... Z
+	{HIGH,LOW}, // P4 .... Z
 	{HIGH,LOW}, // P5 ...  C
 	{HIGH,LOW}, // P6 ..   C
 	{LOW,HIGH}, // P7      G
 	{HIGH,LOW}, // P8 .    C
-	{LOW,HIGH}  // P9 .... C
+	{HIGH,LOW}  // P9 .... C
 };
 
 float ypr[MPU_COUNT+ICM_COUNT][3];
