@@ -230,7 +230,7 @@ const int ypr_correction[MPU_COUNT + ICM_COUNT][3] = {
 	{0,0,0}
 };
 
-const unsigned int motorDir[MOTOR_COUNT][2]
+unsigned int motorDir[MOTOR_COUNT][2]
 {
 	{LOW,HIGH}, // P1 ..   Z
 	{LOW,HIGH}, // P2 .    Z
@@ -241,7 +241,7 @@ const unsigned int motorDir[MOTOR_COUNT][2]
 	{LOW,HIGH}, // P7      G
 	{HIGH,LOW}, // P8 .    C
 	{LOW,HIGH}  // P9 .... C
-}
+};
 
 float ypr[MPU_COUNT+ICM_COUNT][3];
 float full_ypr[MPU_COUNT+ICM_COUNT][3];
