@@ -296,14 +296,12 @@ void setup() {
 	{
 		mcp23017Setup(pinBase+16*x, expanderAddr[x]);
 	}
-	for(uint8_t x=pinBase;x<pinBase+EXPANDER_PIN_COUNT;x++)
+	for(uint8_t y=0;y<2;y++)
 	{
-		for(uint8_t y=0;y<2;y++)
+		for(uint8_t x=0;x<MOTOR_COUNT;x++)
 		{
-			for(uint8_t x=0;x<MOTOR_COUNT;x++)
-			{
-				pinMode(motorPin[x][y], OUTPUT);
-			}
+			pinMode(motorPin[x][y], OUTPUT);
+			digitalWrite(motorPin[x][y], MOTOR_OFF);
 		}
 	}
 	for(uint8_t x=0;x<ENDSTOP_COUNT;x++)
@@ -311,13 +309,6 @@ void setup() {
 		pinMode(endstopPin[x], INPUT);
 		pullUpDnControl(endstopPin[x], PUD_UP);
 		cout << "ENDSTOP[" << (int)endstopPin[x] << "] = " << (int)digitalRead(endstopPin[x]) << endl;
-	}
-	for(uint8_t y=0;y<2;y++)
-	{
-		for(uint8_t x=0;x<MOTOR_COUNT;x++)
-		{
-			digitalWrite(motorPin[x][y], MOTOR_OFF);
-		}
 	}
 	if ((USB0 = serialOpen ("/dev/ttyUSB0", 115200)) < 0)
 	{
