@@ -116,10 +116,10 @@ char udpBuffer[UDP_BUFFER_SIZE];
 struct sockaddr_in servaddr, cliaddr;
 
 MPU6050 mpu[MPU_COUNT] {
-{ 7, 0x68 },
-{ 8, 0x68 },
-{ 9, 0x68 },
-{ 10, 0x68 },
+{ 3, 0x68 },
+{ 4, 0x68 },
+{ 5, 0x68 },
+{ 6, 0x68 },
 };
 
 #define OUTPUT_READABLE_YAWPITCHROLL
