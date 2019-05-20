@@ -77,8 +77,8 @@
 
 #define MOTOR_COUNT 9
 
-#define MOTOR_DIR_UP HIGH
-#define MOTOR_DIR_DOWN LOW
+#define MOTOR_ON LOW
+#define MOTOR_OFF HIGH
 
 using namespace std;
 using json = nlohmann::json;
@@ -116,10 +116,10 @@ char udpBuffer[UDP_BUFFER_SIZE];
 struct sockaddr_in servaddr, cliaddr;
 
 MPU6050 mpu[MPU_COUNT] {
-{ 3, 0x68 },
 { 4, 0x68 },
 { 5, 0x68 },
 { 6, 0x68 },
+{ 3, 0x68 }
 };
 
 #define OUTPUT_READABLE_YAWPITCHROLL
@@ -175,48 +175,48 @@ float goToDestination[MOTOR_COUNT]
 };
 
 const uint8_t endstopPin[ENDSTOP_COUNT]{
-	65,
-	66,
-	67,
-	68,
-	69,
-	70,
-	71,
-	72,
-	73,
-	74,
-	75,
-	76,
-	77,
-	78,
-	79,
-	80,
-	94,
-	95
+	81,
+	82,
+	97,
+	98,
+	99,
+	100,
+	101,
+	102,
+	103,
+	104,
+	105,
+	106,
+	107,
+	108,
+	109,
+	110,
+	111,
+	112,
 };
 
-const uint8_t endstopMotor[MOTOR_COUNT][5]{
-	{72,94,3,2,0},
-	{79,70,4,2,7},
-	{77,65,0,2,4},
-	{76,73,4,0,7},
-	{69,67,2,2,5},
-	{95,71,1,2,2},
-	{75,66,6,0,7},
-	{74,68,5,2,7},
-	{80,78,5,0,7}
+const uint8_t endstopMotor[MOTOR_COUNT][5]{ // krańcówka góra,krańcówka dół,gyro 1,oś gyro, gyro 2
+	{98,112,3,2,0}, // P1 ..   Z
+	{100,103,4,2,7},  // P2 .    Z
+	{104,106,0,2,4},  // P3 ...  Z
+	{81,108,4,0,7},  // P4 .... Z 
+	{107,105,2,2,5},  // P5 ...  C
+	{111,110,1,2,2},  // P6 ..   C
+	{109,97,6,0,7},  // P7      G 
+	{102,101,5,2,7},  // P8 .    C
+	{99,82,5,0,7}   // P9 .... C
 };
 
-const uint8_t motorPin[MOTOR_COUNT][3] = {
-	{104,105,119},//motor1
-	{103,106,118},//motor2
-	{102,107,117},//motor3
-	{101,108,116},//motor4
-	{124,109,115},//motor5
-	{99,110,114},//motor6
-	{98,111,125},//motor7
-	{97,112,113},//motor8
-	{122,121,123},//motor9
+const uint8_t motorPin[MOTOR_COUNT][2] = { // S,K
+	{65,74}, // P1 ..   Z
+	{66,75}, // P2 .    Z
+	{67,76}, // P3 ...  Z
+	{68,77}, // P4 .... Z
+	{69,78}, // P5 ...  C
+	{70,79}, // P6 ..   C
+	{71,80}, // P7      G
+	{72,83}, // P8 .    C
+	{73,84}  // P9 .... C
 };
 
 const int ypr_correction[MPU_COUNT + ICM_COUNT][3] = {
@@ -227,8 +227,21 @@ const int ypr_correction[MPU_COUNT + ICM_COUNT][3] = {
 	{-15,0,0},
 	{30,0,0},
 	{-56,0,0},
-	{0,0,0},
+	{0,0,0}
 };
+
+const unsigned int motorDir[MOTOR_COUNT][2]
+{
+	{LOW,HIGH}  // P1 ..   Z
+	{LOW,HIGH}  // P2 .    Z
+	{LOW,HIGH} // P3 ...  Z
+	{LOW,HIGH} // P4 .... Z
+	{HIGH,LOW} // P5 ...  C
+	{HIGH,LOW} // P6 ..   C
+	{LOW,HIGH} // P7      G
+	{HIGH,LOW} // P8 .    C
+	{LOW,HIGH}  // P9 .... C
+}
 
 float ypr[MPU_COUNT+ICM_COUNT][3];
 float full_ypr[MPU_COUNT+ICM_COUNT][3];
@@ -242,7 +255,7 @@ void emergencyStop()
 	{
 		for(uint8_t x=0;x<MOTOR_COUNT;x++)
 		{
-			digitalWrite(motorPin[x][y], LOW);
+			digitalWrite(motorPin[x][y], MOTOR_OFF);
 		}
 	}
 	cout << "EMERGENCY_STOP!!!" << endl;
@@ -304,7 +317,7 @@ void setup() {
 	{
 		for(uint8_t x=0;x<MOTOR_COUNT;x++)
 		{
-			digitalWrite(motorPin[x][y], LOW);
+			digitalWrite(motorPin[x][y], MOTOR_OFF);
 		}
 	}
 	if ((USB0 = serialOpen ("/dev/ttyUSB0", 115200)) < 0)
@@ -473,17 +486,17 @@ void *consoleInput(void *) {
 		uint8_t motorNum;
 		if(instr.length()==2)
 		{
+			motorNum = (instr[1]-'0')-1;
 			if(instr[0]=='u'){
-				direction = MOTOR_DIR_UP;
+				direction = motorDir[motorNum][0];
 			}
 			else if(instr[0]=='d'){
-				direction = MOTOR_DIR_DOWN;
+				direction = motorDir[motorNum][1];
 			}
 			else
 			{
-				direction = MOTOR_DIR_DOWN;
+				direction = motorDir[motorNum][1];
 			}
-			motorNum = (instr[1]-'0');
 			if(stopped) continue;
 			if(digitalRead(endstopMotor[motorNum][direction])==HIGH) continue;
 			tmr3.reset();
@@ -491,13 +504,13 @@ void *consoleInput(void *) {
 				if (digitalRead(endstopMotor[motorNum][direction])==LOW)
 						{
 							digitalWrite(motorPin[motorNum][1], direction);
-							digitalWrite(motorPin[motorNum][0], HIGH);
+							digitalWrite(motorPin[motorNum][0], MOTOR_ON);
 						}
-				while(stopped == false && tmr3.elapsed()<0.1 && digitalRead(endstopMotor[motorNum][direction])==LOW)
+				while(stopped == false && tmr3.elapsed()<gyroCorrectionTime && digitalRead(endstopMotor[motorNum][direction])==LOW)
 				{
 					
 				}
-				digitalWrite(motorPin[motorNum][0], LOW);
+				digitalWrite(motorPin[motorNum][0], MOTOR_OFF);
 				if(digitalRead(endstopMotor[motorNum][direction])==HIGH)
 				{
 					if(verboseMode) cout << "TRIGERRED FROM ENDSTOP" << endl;
@@ -534,18 +547,18 @@ void *gyroAutoCorrection(void *) {
 				if(abs(diff)>5)
 				{
 					if(diff<0){
-						direction[motorNum] = MOTOR_DIR_UP;
+						direction[motorNum] = direction = motorDir[motorNum][0];
 						if(verboseMode) cout << "UP" << full_ypr[gyroid[motorNum]][axisid[motorNum]] << " " << full_ypr[gyroid2[motorNum]][axisid[motorNum]] << endl;
 					}
 					else if(diff>0){
-						direction[motorNum] = MOTOR_DIR_DOWN;
+						direction[motorNum] = direction = motorDir[motorNum][1];
 						if(verboseMode) cout << "DOWN" << full_ypr[gyroid[motorNum]][axisid[motorNum]] << " " << full_ypr[gyroid2[motorNum]][axisid[motorNum]] << endl;
 					}
 					try {
 						if (digitalRead(endstopMotor[motorNum][direction[motorNum]])==LOW)
 						{
 							digitalWrite(motorPin[motorNum][1], direction[motorNum]);
-							digitalWrite(motorPin[motorNum][0], HIGH);
+							digitalWrite(motorPin[motorNum][0], MOTOR_ON);
 						}
 					}
 					catch(string e){
@@ -574,8 +587,8 @@ void *gyroAutoCorrection(void *) {
 		{
 			if(goToDestination[motorNum])
 			{
-				digitalWrite(motorPin[motorNum][0], LOW);
-				digitalWrite(motorPin[motorNum][1], LOW);
+				digitalWrite(motorPin[motorNum][0], MOTOR_OFF);
+				digitalWrite(motorPin[motorNum][1], MOTOR_OFF);
 			}
 		}
 		
