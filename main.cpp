@@ -232,14 +232,14 @@ const int ypr_correction[MPU_COUNT + ICM_COUNT][3] = {
 
 const unsigned int motorDir[MOTOR_COUNT][2]
 {
-	{LOW,HIGH}  // P1 ..   Z
-	{LOW,HIGH}  // P2 .    Z
-	{LOW,HIGH} // P3 ...  Z
-	{LOW,HIGH} // P4 .... Z
-	{HIGH,LOW} // P5 ...  C
-	{HIGH,LOW} // P6 ..   C
-	{LOW,HIGH} // P7      G
-	{HIGH,LOW} // P8 .    C
+	{LOW,HIGH}, // P1 ..   Z
+	{LOW,HIGH}, // P2 .    Z
+	{LOW,HIGH}, // P3 ...  Z
+	{LOW,HIGH}, // P4 .... Z
+	{HIGH,LOW}, // P5 ...  C
+	{HIGH,LOW}, // P6 ..   C
+	{LOW,HIGH}, // P7      G
+	{HIGH,LOW}, // P8 .    C
 	{LOW,HIGH}  // P9 .... C
 }
 
