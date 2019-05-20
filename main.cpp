@@ -674,7 +674,7 @@ int main() {
 	pthread_t t_uno;
 	pthread_t t_mega;
 	pthread_t t_udpserver;
-	//pthread_create(&t_gyro, NULL, readMPU, NULL);
+	pthread_create(&t_gyro, NULL, readMPU, NULL);
 	cout << "MPU6050 thread started[OK]" << endl;
 	//pthread_create(&t_uno, NULL, readUno, NULL);
 	cout << "Arduino Uno thread started[OK]" << endl;
@@ -690,7 +690,7 @@ int main() {
 	cout << "Arduino Uno thread detached[OK]" << endl;
 	//pthread_detach(t_mega);
 	cout << "Arduino Mega thread detached[OK]" << endl;
-	//pthread_detach(t_gyro);
+	pthread_detach(t_gyro);
 	cout << "MPU6050 thread detached[OK]" << endl;
 	//pthread_detach(t_console);
 	cout << "Console input thread detached[OK]" << endl;
