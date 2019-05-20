@@ -142,10 +142,9 @@ bool verboseMode = false;
 
 const uint8_t pinBase=65;
 const uint8_t expanderAddr[EXPANDER_COUNT] = {
-	0x20,
 	0x21,
-	0x24,
-	0x22
+	0x23,
+	0x20
 };
 
 float destinations[MOTOR_COUNT]

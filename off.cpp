@@ -15,22 +15,21 @@ using namespace std;
 const uint8_t pinBase=65;
 
 const uint8_t expanderAddr[EXPANDER_COUNT] = {
-	0x20,
 	0x21,
-	0x24,
-	0x22
+	0x23,
+	0x20
 };
 
-const uint8_t motorPin[MOTOR_COUNT][3] = {
-	{104,105,119},//motor1
-	{103,106,118},//motor2
-	{102,107,117},//motor3
-	{101,108,116},//motor4
-	{124,109,115},//motor5
-	{99,110,114},//motor6
-	{98,111,125},//motor7
-	{97,112,113},//motor8
-	{122,121,123},//motor9
+const uint8_t motorPin[MOTOR_COUNT][2] = { // S,K
+	{65,74}, // P1 ..   Z
+	{66,75}, // P2 .    Z
+	{67,76}, // P3 ...  Z
+	{68,77}, // P4 .... Z
+	{69,78}, // P5 ...  C
+	{70,79}, // P6 ..   C
+	{71,80}, // P7      G
+	{72,83}, // P8 .    C
+	{73,84}  // P9 .... C
 };
 
 int main() {
@@ -44,7 +43,7 @@ int main() {
 		for(uint8_t x=0;x<MOTOR_COUNT;x++)
 		{
 			pinMode(motorPin[x][y], OUTPUT);
-			digitalWrite(motorPin[x][y], LOW);
+			digitalWrite(motorPin[x][y], HIGH);
 		}
 	}
 	cout << "ALL OUTPUTS SET TO LOW[OK]" << endl;
