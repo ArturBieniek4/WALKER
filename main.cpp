@@ -385,7 +385,21 @@ void *readUno1(void *){
 					pthread_mutex_unlock(&mutex_full_ypr);
 			}
 			}
+			if(tokens[0]=="#3"){
+			for(unsigned int i = 1; i < tokens.size(); i++){
+					pthread_mutex_lock(&mutex_full_ypr);
+					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+0][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+0][i-1];
+					pthread_mutex_unlock(&mutex_full_ypr);
+			}
+			}
 			
+			else if(tokens[0]=="#4"){
+			for(unsigned int i = 1; i < tokens.size(); i++){
+					pthread_mutex_lock(&mutex_full_ypr);
+					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+1][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+1][i-1];
+					pthread_mutex_unlock(&mutex_full_ypr);
+			}
+			}
 		}
 		else{
 			buf1 += znak1;
@@ -405,6 +419,21 @@ void *readUno2(void *){
 			while(getline(check1, intermediate, ':')) 
 			{
 				tokens.push_back(intermediate);
+			}
+			if(tokens[0]=="#1"){
+			for(unsigned int i = 1; i < tokens.size(); i++){
+					pthread_mutex_lock(&mutex_full_ypr);
+					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+2][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+2][i-1];
+					pthread_mutex_unlock(&mutex_full_ypr);
+			}
+			}
+			
+			else if(tokens[0]=="#2"){
+			for(unsigned int i = 1; i < tokens.size(); i++){
+					pthread_mutex_lock(&mutex_full_ypr);
+					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+3][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+3][i-1];
+					pthread_mutex_unlock(&mutex_full_ypr);
+			}
 			}
 			if(tokens[0]=="#3"){
 			for(unsigned int i = 1; i < tokens.size(); i++){
