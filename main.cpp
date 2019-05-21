@@ -33,47 +33,8 @@
 #define EMERGENCY_STOP_PIN 2
 #define ENDSTOP_COUNT 18
 
-
-#define ENDSTOP_CZERWONA_STOPA_DOL 71
-#define ENDSTOP_CZERWONA_STOPA_GORA 95
-
-#define ENDSTOP_CZERWONA_KOLANO_DOL 67
-#define ENDSTOP_CZERWONA_KOLANO_GORA 69
-
-#define ENDSTOP_CZERWONA_NOGA_DOL 68
-#define ENDSTOP_CZERWONA_NOGA_GORA 74
-
-#define ENDSTOP_CZERWONA_UDO_DOSR 80
-#define ENDSTOP_CZERWONA_UDO_ODSR 78
-
-
 #define UDP_BUFFER_SIZE 4096
 #define UDP_SERVER_PORT 11000
-
-#define ENDSTOP_ZIELONA_STOPA_DOL 94
-#define ENDSTOP_ZIELONA_STOPA_GORA 72
-
-#define ENDSTOP_ZIELONA_KOLANO_DOL 65
-#define ENDSTOP_ZIELONA_KOLANO_GORA 77
-
-#define ENDSTOP_ZIELONA_NOGA_DOL 70
-#define ENDSTOP_ZIELONA_NOGA_GORA 79
-
-#define ENDSTOP_ZIELONA_UDO_DOSR 76
-#define ENDSTOP_ZIELONA_UDO_ODSR 73
-
-
-
-#define GYRO_CZERWONA_STOPA 5
-#define GYRO_CZERWONA_KOLANO 6
-#define GYRO_CZERWONA_NOGA 1
-
-#define GYRO_ZIELONA_STOPA 7
-#define GYRO_ZIELONA_KOLANO 4
-#define GYRO_ZIELONA_NOGA 3
-
-#define GYRO_MIEDNICA 0
-#define GYRO_GORNE 2
 
 #define MOTOR_COUNT 9
 
@@ -396,7 +357,7 @@ void *readMPU(void *) {
 	}
 }
 
-void *readUno(void *){
+void *readUno1(void *){
 	while(true){
 		znak1 = serialGetchar(USB1);
 		if (znak1=='$') {
@@ -432,7 +393,7 @@ void *readUno(void *){
 	}
 }
 
-void *readMega(void *){
+void *readUno2(void *){
 	while(true){
 		znak0 = serialGetchar(USB0);
 		if (znak0=='$') {
@@ -674,25 +635,25 @@ int main() {
 	pthread_t t_gyro;
 	pthread_t t_console;
 	pthread_t t_autocorrection;
-	pthread_t t_uno;
-	pthread_t t_mega;
+	pthread_t t_uno1;
+	pthread_t t_uno2;
 	pthread_t t_udpserver;
 	pthread_create(&t_gyro, NULL, readMPU, NULL);
 	cout << "MPU6050 thread started[OK]" << endl;
-	pthread_create(&t_uno, NULL, readUno, NULL);
-	cout << "Arduino Uno thread started[OK]" << endl;
-	pthread_create(&t_mega, NULL, readMega, NULL);
-	cout << "Arduino Mega thread started[OK]" << endl;
+	pthread_create(&t_uno1, NULL, readUno, NULL);
+	cout << "Arduino Uno1 thread started[OK]" << endl;
+	pthread_create(&t_uno2, NULL, readMega, NULL);
+	cout << "Arduino Uno2 thread started[OK]" << endl;
 	pthread_create(&t_console, NULL, consoleInput, NULL);
 	cout << "Console input thread started[OK]" << endl;
 	pthread_create(&t_autocorrection, NULL, gyroAutoCorrection, NULL);
 	cout << "Gyro Auto Correction thread started[OK]" << endl;
 	pthread_create(&t_udpserver, NULL, UDPServer, NULL);
 	cout << "UDP Server thread started[OK]" << endl;
-	pthread_detach(t_uno);
-	cout << "Arduino Uno thread detached[OK]" << endl;
-	pthread_detach(t_mega);
-	cout << "Arduino Mega thread detached[OK]" << endl;
+	pthread_detach(t_uno1);
+	cout << "Arduino Uno1 thread detached[OK]" << endl;
+	pthread_detach(t_uno2);
+	cout << "Arduino Uno2 thread detached[OK]" << endl;
 	pthread_detach(t_gyro);
 	cout << "MPU6050 thread detached[OK]" << endl;
 	pthread_detach(t_console);
