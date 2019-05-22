@@ -6,7 +6,7 @@ MAIN_OBJS = main.o
 
 # Set DMP FIFO rate to 10Hz
 
-CXXFLAGS = -Wall -g -lwiringPi -pthread -O2
+CXXFLAGS = -Wall -g -lwiringPi -pthread
 
 $(CMN_OBJS) $(MAIN_OBJS) : $(HDRS)
 
