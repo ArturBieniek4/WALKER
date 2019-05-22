@@ -549,7 +549,7 @@ void *UDPServer(void *) {
 
 void *readUno(void *){
 	while(true){
-		buf+=tcp.receive();
+		buf0+=tcp.receive();
 		for(int i=0;i<buf.length();i++)
 		{
 			if(buf[i]=='$')
