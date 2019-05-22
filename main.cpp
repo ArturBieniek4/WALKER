@@ -38,6 +38,9 @@
 #define UDP_BUFFER_SIZE 4096
 #define UDP_SERVER_PORT 11000
 
+#define SERWER_PORT 8888
+#define SERWER_IP "127.0.0.1"
+
 #define MOTOR_COUNT 9
 
 #define MOTOR_ON LOW
