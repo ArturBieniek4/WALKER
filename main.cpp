@@ -550,12 +550,12 @@ void *UDPServer(void *) {
 void *readUno(void *){
 	while(true){
 		buf0+=tcp.receive();
-		for(int i=0;i<buf.length();i++)
+		for(int i=0;i<buf0.length();i++)
 		{
 			if(buf[i]=='$')
 			{
-				line = buf.substr(0,i+1);
-				buf0 = buf.substr(i+1,buf.length()-i-1);
+				line = buf0.substr(0,i+1);
+				buf0 = buf0.substr(i+1,buf.length()-i-1);
 				vector <string> tokens;
 				stringstream check1(line);
 				string intermediate;
