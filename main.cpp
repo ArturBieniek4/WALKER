@@ -552,7 +552,7 @@ void *readUno(void *){
 		buf0+=tcp.receive();
 		for(int i=0;i<buf0.length();i++)
 		{
-			if(buf[i]=='$')
+			if(buf0[i]=='$')
 			{
 				line = buf0.substr(0,i+1);
 				buf0 = buf0.substr(i+1,buf.length()-i-1);
