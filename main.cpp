@@ -404,6 +404,9 @@ void *readUno1(void *){
 			}
 			cout << "UNO1, gyro4" << endl;
 			}
+			else{
+				cout << line0 << endl;
+			}
 		}
 		else{
 			buf1 += znak1;
@@ -457,6 +460,9 @@ void *readUno2(void *){
 					pthread_mutex_unlock(&mutex_full_ypr);
 			}
 			cout << "UNO2, gyro4" << endl;
+			}
+			else{
+				cout << line0 << endl;
 			}
 			
 		}
