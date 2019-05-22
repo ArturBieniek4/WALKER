@@ -535,20 +535,29 @@ void *UDPServer(void *) {
 	}
 }
 
-void loop() {
-	znak0 = serialGetchar(USB0);
+void *Uno(void *) {
+	while(true){
+		znak0 = serialGetchar(USB0);
 		buf0+=znak0;
 		if(znak0=='$')
 		{
 			cout << buf0 << endl;
 			buf0= "";
 		}
-	//usleep(60000000);
+	}
+}
+
+void loop() {
+	
+	usleep(60000000);
 }
 
 int main() {
 	system("clear");
+	pthread_t t_uno;
     setup();
+	pthread_create(&t_uno, NULL, Uno, NULL);
+	pthread_detach(t_uno);
 	pthread_t t_gyro;
 	pthread_t t_console;
 	pthread_t t_autocorrection;
