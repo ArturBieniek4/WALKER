@@ -312,8 +312,8 @@ void setup() {
         exit(EXIT_FAILURE); 
     }
 	cout << "[OK]" << endl << "Waiting for connection...";
-	socklen_t len;
-	recvfrom(sockfd, (char *)udpBuffer, UDP_BUFFER_SIZE,  MSG_WAITALL, ( struct sockaddr *) &cliaddr, &len);
+	//socklen_t len;
+	//recvfrom(sockfd, (char *)udpBuffer, UDP_BUFFER_SIZE,  MSG_WAITALL, ( struct sockaddr *) &cliaddr, &len);
 	cout << "[OK]" << endl;
 }
 
