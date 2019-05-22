@@ -48,10 +48,6 @@ const float accelScale = 16384.0f;
 
 char znak0;
 string buf0;
-string line0 = "";
-char znak1;
-string buf1 = "";
-string line1 = "";
 
 class Timer
 {
@@ -206,7 +202,7 @@ const unsigned int motorDir[MOTOR_COUNT][2]
 float ypr[MPU_COUNT+ICM_COUNT][3];
 float full_ypr[MPU_COUNT+ICM_COUNT][3];
 
-int USB0, USB1;
+int USB0;
 
 void emergencyStop()
 {
@@ -271,18 +267,6 @@ void setup() {
 		pullUpDnControl(endstopPin[x], PUD_UP);
 		cout << "ENDSTOP[" << (int)endstopPin[x] << "] = " << (int)digitalRead(endstopPin[x]) << endl;
 	}
-	if ((USB0 = serialOpen ("/dev/ttyUSB0", 9600)) < 0)
-	{
-		cout << "Unable to open serial device USB0";
-		/*emergencyStop();
-		exit(0);*/
-	}
-	//if ((USB1 = serialOpen ("/dev/ttyUSB1", 9600)) < 0)
-	//{
-	//	cout << "Unable to open serial device USB1";
-	//	/*emergencyStop();
-	//	exit(0);*/
-	//}
 	// MPU6050 initialization
 	for(uint8_t x=0;x<MPU_COUNT;x++)
 	{
@@ -315,6 +299,10 @@ void setup() {
 	//socklen_t len;
 	//recvfrom(sockfd, (char *)udpBuffer, UDP_BUFFER_SIZE,  MSG_WAITALL, ( struct sockaddr *) &cliaddr, &len);
 	cout << "[OK]" << endl;
+	if ((USB0 = serialOpen ("/dev/ttyUSB0", 9600)) < 0)
+	{
+		cout << "Unable to open serial device USB0";
+	}
 }
 
 void *readMPU(void *) {
@@ -353,99 +341,6 @@ void *readMPU(void *) {
 			full_ypr[x][2] = ypr[x][2] + ypr_correction[x][2];
 			pthread_mutex_unlock(&mutex_full_ypr);
 			pthread_mutex_unlock(&mutex_ypr);
-		}
-	}
-}
-
-void *readUno1(void *){
-	while(true){
-		znak1 = serialGetchar(USB1);
-		if (znak1=='$') {
-			line1 = buf1;
-			buf1="";
-			vector <string> tokens;
-			stringstream check1(line1);
-			string intermediate;
-			while(getline(check1, intermediate, ':')) 
-			{
-				tokens.push_back(intermediate);
-			}
-			if(tokens[0]=="#1"){
-			for(unsigned int i = 1; i < tokens.size(); i++){
-					pthread_mutex_lock(&mutex_full_ypr);
-					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+2][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+2][i-1];
-					pthread_mutex_unlock(&mutex_full_ypr);
-			}
-			}
-			
-			else if(tokens[0]=="#2"){
-			for(unsigned int i = 1; i < tokens.size(); i++){
-					pthread_mutex_lock(&mutex_full_ypr);
-					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+3][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+3][i-1];
-					pthread_mutex_unlock(&mutex_full_ypr);
-			}
-			}
-		}
-		else{
-			buf1 += znak1;
-		}
-	}
-}
-
-void *readUno2(void *){
-	while(true){
-		znak0 = serialGetchar(USB0);
-		if (znak0=='$') {
-			line0 = buf0;
-			buf0="";
-			vector <string> tokens;
-			stringstream check1(line0);
-			string intermediate;
-			while(getline(check1, intermediate, ':')) 
-			{
-				tokens.push_back(intermediate);
-			}
-			if(tokens[0]=="#1"){
-			for(unsigned int i = 1; i < tokens.size(); i++){
-					pthread_mutex_lock(&mutex_full_ypr);
-					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+2][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+2][i-1];
-					pthread_mutex_unlock(&mutex_full_ypr);
-			}
-			cout << "UNO2, gyro1" << endl;
-			}
-			
-			else if(tokens[0]=="#2"){
-			for(unsigned int i = 1; i < tokens.size(); i++){
-					pthread_mutex_lock(&mutex_full_ypr);
-					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+3][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+3][i-1];
-					pthread_mutex_unlock(&mutex_full_ypr);
-			}
-			cout << "UNO2, gyro2" << endl;
-			}
-			else if(tokens[0]=="#3"){
-			for(unsigned int i = 1; i < tokens.size(); i++){
-					pthread_mutex_lock(&mutex_full_ypr);
-					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+0][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+0][i-1];
-					pthread_mutex_unlock(&mutex_full_ypr);
-			}
-			cout << "UNO2, gyro3" << endl;
-			}
-			
-			else if(tokens[0]=="#4"){
-			for(unsigned int i = 1; i < tokens.size(); i++){
-					pthread_mutex_lock(&mutex_full_ypr);
-					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+1][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+1][i-1];
-					pthread_mutex_unlock(&mutex_full_ypr);
-			}
-			cout << "UNO2, gyro4" << endl;
-			}
-			else{
-				cout << line0 << endl;
-			}
-			
-		}
-		else{
-			buf0 += znak0;
 		}
 	}
 }
@@ -657,25 +552,15 @@ int main() {
 	pthread_t t_gyro;
 	pthread_t t_console;
 	pthread_t t_autocorrection;
-	pthread_t t_uno1;
-	pthread_t t_uno2;
 	pthread_t t_udpserver;
 	pthread_create(&t_gyro, NULL, readMPU, NULL);
 	cout << "MPU6050 thread started[OK]" << endl;
-	//pthread_create(&t_uno1, NULL, readUno1, NULL);
-	cout << "Arduino Uno1 thread started[OK]" << endl;
-	//pthread_create(&t_uno2, NULL, readUno2, NULL);
-	cout << "Arduino Uno2 thread started[OK]" << endl;
 	pthread_create(&t_console, NULL, consoleInput, NULL);
 	cout << "Console input thread started[OK]" << endl;
 	pthread_create(&t_autocorrection, NULL, gyroAutoCorrection, NULL);
 	cout << "Gyro Auto Correction thread started[OK]" << endl;
 	pthread_create(&t_udpserver, NULL, UDPServer, NULL);
 	cout << "UDP Server thread started[OK]" << endl;
-	//pthread_detach(t_uno1);
-	cout << "Arduino Uno1 thread detached[OK]" << endl;
-	//pthread_detach(t_uno2);
-	cout << "Arduino Uno2 thread detached[OK]" << endl;
 	pthread_detach(t_gyro);
 	cout << "MPU6050 thread detached[OK]" << endl;
 	pthread_detach(t_console);
