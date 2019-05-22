@@ -563,7 +563,7 @@ void *readUno(void *){
 				{
 					tokens.push_back(intermediate);
 				}
-				if(tokens[0]=="#1"){
+				if(tokens[0]=="#3"){
 				for(unsigned int i = 1; i < tokens.size(); i++){
 						pthread_mutex_lock(&mutex_full_ypr);
 						if(tokens[i]!="nan")	full_ypr[MPU_COUNT+2][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+2][i-1];
