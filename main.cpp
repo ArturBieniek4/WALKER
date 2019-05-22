@@ -277,12 +277,12 @@ void setup() {
 		/*emergencyStop();
 		exit(0);*/
 	}
-	if ((USB1 = serialOpen ("/dev/ttyUSB1", 9600)) < 0)
-	{
-		cout << "Unable to open serial device USB1";
-		/*emergencyStop();
-		exit(0);*/
-	}
+	//if ((USB1 = serialOpen ("/dev/ttyUSB1", 9600)) < 0)
+	//{
+	//	cout << "Unable to open serial device USB1";
+	//	/*emergencyStop();
+	//	exit(0);*/
+	//}
 	// MPU6050 initialization
 	for(uint8_t x=0;x<MPU_COUNT;x++)
 	{
@@ -655,9 +655,9 @@ int main() {
 	pthread_t t_udpserver;
 	pthread_create(&t_gyro, NULL, readMPU, NULL);
 	cout << "MPU6050 thread started[OK]" << endl;
-	pthread_create(&t_uno1, NULL, readUno1, NULL);
+	//pthread_create(&t_uno1, NULL, readUno1, NULL);
 	cout << "Arduino Uno1 thread started[OK]" << endl;
-	//pthread_create(&t_uno2, NULL, readUno2, NULL);
+	pthread_create(&t_uno2, NULL, readUno2, NULL);
 	cout << "Arduino Uno2 thread started[OK]" << endl;
 	pthread_create(&t_console, NULL, consoleInput, NULL);
 	cout << "Console input thread started[OK]" << endl;
@@ -665,9 +665,9 @@ int main() {
 	cout << "Gyro Auto Correction thread started[OK]" << endl;
 	pthread_create(&t_udpserver, NULL, UDPServer, NULL);
 	cout << "UDP Server thread started[OK]" << endl;
-	pthread_detach(t_uno1);
+	//pthread_detach(t_uno1);
 	cout << "Arduino Uno1 thread detached[OK]" << endl;
-	//pthread_detach(t_uno2);
+	pthread_detach(t_uno2);
 	cout << "Arduino Uno2 thread detached[OK]" << endl;
 	pthread_detach(t_gyro);
 	cout << "MPU6050 thread detached[OK]" << endl;
