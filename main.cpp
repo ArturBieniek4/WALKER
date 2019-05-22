@@ -410,6 +410,7 @@ void *readUno1(void *){
 		}
 		else{
 			buf1 += znak1;
+			cout << znak1;
 		}
 	}
 }
