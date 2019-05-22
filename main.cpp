@@ -543,48 +543,33 @@ void loop() {
 			cout << buf0 << endl;
 			buf0= "";
 		}
+	//usleep(60000000);
 }
 
 int main() {
 	system("clear");
     setup();
-	loop();
 	pthread_t t_gyro;
 	pthread_t t_console;
 	pthread_t t_autocorrection;
 	pthread_t t_udpserver;
-	pthread_create(&t_gyro, NULL, readMPU, NULL);
-	loop();
+	//pthread_create(&t_gyro, NULL, readMPU, NULL);
 	cout << "MPU6050 thread started[OK]" << endl;
-	loop();
-	pthread_create(&t_console, NULL, consoleInput, NULL);
-	loop();
+	//pthread_create(&t_console, NULL, consoleInput, NULL);
 	cout << "Console input thread started[OK]" << endl;
-	loop();
 	//pthread_create(&t_autocorrection, NULL, gyroAutoCorrection, NULL);
 	cout << "Gyro Auto Correction thread started[OK]" << endl;
-	loop();
-	pthread_create(&t_udpserver, NULL, UDPServer, NULL);
-	loop();
+	//pthread_create(&t_udpserver, NULL, UDPServer, NULL);
 	cout << "UDP Server thread started[OK]" << endl;
-	loop();
-	pthread_detach(t_gyro);
-	loop();
+	//pthread_detach(t_gyro);
 	cout << "MPU6050 thread detached[OK]" << endl;
-	loop();
-	pthread_detach(t_console);
-	loop();
+	//pthread_detach(t_console);
 	cout << "Console input thread detached[OK]" << endl;
-	loop();
 	//pthread_detach(t_autocorrection);
 	cout << "Gyro Auto Correction thread started[OK]" << endl;
-	loop();
-	pthread_detach(t_udpserver);
-	loop();
+	//pthread_detach(t_udpserver);
 	cout << "UDP Server thread detached[OK]" << endl;
-	loop();
 	cout << "Starting the main loop..." << endl;
-	loop();
     while(true) {
 		loop();
 	}
