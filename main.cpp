@@ -47,7 +47,7 @@ using json = nlohmann::json;
 const float accelScale = 16384.0f;
 
 char znak0;
-string buf0 = "";
+string buf0;
 string line0 = "";
 char znak1;
 string buf1 = "";
