@@ -609,8 +609,8 @@ int main() {
     }
    
     struct sockaddr_in from = { };
-   //while(true)
-   //{
+   while(true)
+   {
 	   memset( buffer, 0, sizeof( buffer ) );
     if( recvfrom( socket_, buffer, sizeof( buffer ), 0,( struct sockaddr * ) & from, & len ) < 0 )
     {
@@ -618,7 +618,7 @@ int main() {
         exit( 1 );
     }
     printf( "|Server's reply|: %s \n", buffer );
-   //}
+   }
     while(true) {
 		loop();
 	}
