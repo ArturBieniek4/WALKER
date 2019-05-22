@@ -555,7 +555,7 @@ void *readUno(void *){
 			if(buf0[i]=='$')
 			{
 				line = buf0.substr(0,i+1);
-				buf0 = buf0.substr(i+1,buf.length()-i-1);
+				buf0 = buf0.substr(i+1,buf0.length()-i-1);
 				vector <string> tokens;
 				stringstream check1(line);
 				string intermediate;
