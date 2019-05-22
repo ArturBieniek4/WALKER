@@ -271,13 +271,13 @@ void setup() {
 		pullUpDnControl(endstopPin[x], PUD_UP);
 		cout << "ENDSTOP[" << (int)endstopPin[x] << "] = " << (int)digitalRead(endstopPin[x]) << endl;
 	}
-	if ((USB0 = serialOpen ("/dev/ttyUSB0", 115200)) < 0)
+	if ((USB0 = serialOpen ("/dev/ttyUSB0", 9600)) < 0)
 	{
 		cout << "Unable to open serial device USB0";
 		/*emergencyStop();
 		exit(0);*/
 	}
-	if ((USB1 = serialOpen ("/dev/ttyUSB1", 115200)) < 0)
+	if ((USB1 = serialOpen ("/dev/ttyUSB1", 9600)) < 0)
 	{
 		cout << "Unable to open serial device USB1";
 		/*emergencyStop();
