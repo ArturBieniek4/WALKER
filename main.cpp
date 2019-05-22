@@ -253,12 +253,12 @@ void setup() {
 			cout << "EMERGENCY_STOP_PIN is CONNECTED AGAIN." << endl;
 		}
 	}
-	if ((USB0 = serialOpen ("/dev/ttyUSB0", 115200)) < 0)
+	if ((USB0 = serialOpen ("/dev/ttyUSB0", 9600)) < 0)
 	{
 		cout << "Unable to open serial device USB0";
 		return;
 	}
-	if ((USB1 = serialOpen ("/dev/ttyUSB1", 115200)) < 0)
+	if ((USB1 = serialOpen ("/dev/ttyUSB1", 9600)) < 0)
 	{
 		cout << "Unable to open serial device USB1";
 		return;
