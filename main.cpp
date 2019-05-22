@@ -579,7 +579,7 @@ int main() {
 	pthread_detach(t_udpserver);
 	cout << "UDP Server thread detached[OK]" << endl;
 	cout << "Starting the main loop..." << endl;
-	/*struct sockaddr_in serwer =
+	struct sockaddr_in serwer =
     {
         .sin_family = AF_INET,
         .sin_port = htons( SERWER_PORT )
@@ -618,7 +618,7 @@ int main() {
         exit( 1 );
     }
     printf( "|Server's reply|: %s \n", buffer );
-   //}*/
+   //}
     while(true) {
 		loop();
 	}
