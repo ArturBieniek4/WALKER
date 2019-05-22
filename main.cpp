@@ -674,13 +674,13 @@ int main() {
 	pthread_t t_console;
 	pthread_t t_autocorrection;
 	pthread_t t_uno1;
-	pthread_t t_uno2;
+	//pthread_t t_uno2;
 	pthread_t t_udpserver;
 	pthread_create(&t_gyro, NULL, readMPU, NULL);
 	cout << "MPU6050 thread started[OK]" << endl;
 	pthread_create(&t_uno1, NULL, readUno1, NULL);
 	cout << "Arduino Uno1 thread started[OK]" << endl;
-	pthread_create(&t_uno2, NULL, readUno2, NULL);
+	//pthread_create(&t_uno2, NULL, readUno2, NULL);
 	cout << "Arduino Uno2 thread started[OK]" << endl;
 	pthread_create(&t_console, NULL, consoleInput, NULL);
 	cout << "Console input thread started[OK]" << endl;
@@ -690,7 +690,7 @@ int main() {
 	cout << "UDP Server thread started[OK]" << endl;
 	pthread_detach(t_uno1);
 	cout << "Arduino Uno1 thread detached[OK]" << endl;
-	pthread_detach(t_uno2);
+	//pthread_detach(t_uno2);
 	cout << "Arduino Uno2 thread detached[OK]" << endl;
 	pthread_detach(t_gyro);
 	cout << "MPU6050 thread detached[OK]" << endl;
