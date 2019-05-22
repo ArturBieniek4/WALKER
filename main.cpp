@@ -9,6 +9,8 @@
 #include <netinet/in.h>
 #include <math.h>
 #include "I2Cdev.h"
+#include <signal.h>
+#include "TCPClient.h"
 #include <wiringPi.h>
 #include <wiringSerial.h>
 #include <mcp23017.h>
@@ -43,6 +45,14 @@
 
 using namespace std;
 using json = nlohmann::json;
+string buftcp;
+string line;
+TCPClient tcp;
+void sig_exit(int s)
+{
+	tcp.exit();
+	exit(0);
+}
 
 const float accelScale = 16384.0f;
 
@@ -226,6 +236,8 @@ float compareAngles(float x, float y)
 }
 
 void setup() {
+	signal(SIGINT, sig_exit);
+	tcp.setup("127.0.0.1",10001);
 	wiringPiSetup();
 	pinMode(EMERGENCY_STOP_PIN, INPUT);
 	pullUpDnControl(EMERGENCY_STOP_PIN, PUD_UP);
@@ -535,14 +547,50 @@ void *UDPServer(void *) {
 	}
 }
 
+void *readUno(void *){
+	while(true){
+		buf+=tcp.receive();
+		for(int i=0;i<buf.length();i++)
+		{
+			if(buf[i]=='$')
+			{
+				line = buf.substr(0,i+1);
+				buf = buf.substr(i+1,buf.length()-i-1);
+				vector <string> tokens;
+				stringstream check1(line);
+				string intermediate;
+				while(getline(check1, intermediate, ':')) 
+				{
+					tokens.push_back(intermediate);
+				}
+				if(tokens[0]=="#1"){
+				for(unsigned int i = 1; i < tokens.size(); i++){
+						pthread_mutex_lock(&mutex_full_ypr);
+						if(tokens[i]!="nan")	full_ypr[MPU_COUNT+2][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+2][i-1];
+						pthread_mutex_unlock(&mutex_full_ypr);
+				}
+				}
+				
+				else if(tokens[0]=="#2"){
+				for(unsigned int i = 1; i < tokens.size(); i++){
+						pthread_mutex_lock(&mutex_full_ypr);
+						if(tokens[i]!="nan")	full_ypr[MPU_COUNT+3][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+3][i-1];
+						pthread_mutex_unlock(&mutex_full_ypr);
+				}
+				}
+			}
+		}
+	}
+}
+
 void loop() {
-	znak0 = serialGetchar(USB0);
+	/*znak0 = serialGetchar(USB0);
 		buf0+=znak0;
 		if(znak0=='$')
 		{
 			cout << buf0 << endl;
 			buf0= "";
-		}
+		}*/
 	//usleep(60000000);
 }
 
@@ -553,21 +601,24 @@ int main() {
 	pthread_t t_console;
 	pthread_t t_autocorrection;
 	pthread_t t_udpserver;
-	//pthread_create(&t_gyro, NULL, readMPU, NULL);
+	pthread_t t_uno;
+	pthread_create(&t_uno, NULL, readUno, NULL);
+	pthread_detach(t_uno);
+	pthread_create(&t_gyro, NULL, readMPU, NULL);
 	cout << "MPU6050 thread started[OK]" << endl;
-	//pthread_create(&t_console, NULL, consoleInput, NULL);
+	pthread_create(&t_console, NULL, consoleInput, NULL);
 	cout << "Console input thread started[OK]" << endl;
-	//pthread_create(&t_autocorrection, NULL, gyroAutoCorrection, NULL);
+	pthread_create(&t_autocorrection, NULL, gyroAutoCorrection, NULL);
 	cout << "Gyro Auto Correction thread started[OK]" << endl;
-	//pthread_create(&t_udpserver, NULL, UDPServer, NULL);
+	pthread_create(&t_udpserver, NULL, UDPServer, NULL);
 	cout << "UDP Server thread started[OK]" << endl;
-	//pthread_detach(t_gyro);
+	pthread_detach(t_gyro);
 	cout << "MPU6050 thread detached[OK]" << endl;
-	//pthread_detach(t_console);
+	pthread_detach(t_console);
 	cout << "Console input thread detached[OK]" << endl;
-	//pthread_detach(t_autocorrection);
+	pthread_detach(t_autocorrection);
 	cout << "Gyro Auto Correction thread started[OK]" << endl;
-	//pthread_detach(t_udpserver);
+	pthread_detach(t_udpserver);
 	cout << "UDP Server thread detached[OK]" << endl;
 	cout << "Starting the main loop..." << endl;
     while(true) {
