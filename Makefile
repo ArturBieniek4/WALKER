@@ -1,7 +1,7 @@
 all: main
 
 HDRS = helper_3dmath.h I2Cdev.h MPU6050.h
-CMN_OBJS = I2Cdev.o MPU6050.o
+CMN_OBJS = I2Cdev.o MPU6050.o TCPClient.o
 MAIN_OBJS = main.o
 
 # Set DMP FIFO rate to 10Hz
