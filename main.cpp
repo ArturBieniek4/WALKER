@@ -78,7 +78,9 @@ Timer tmr;
 Timer tmr2;
 Timer tmr3;
 
-
+int sockfd;
+char udpBuffer[UDP_BUFFER_SIZE];
+struct sockaddr_in servaddr, cliaddr;
 
 MPU6050 mpu[MPU_COUNT] {
 { 4, 0x68 },
@@ -539,44 +541,15 @@ void *UDPServer(void *) {
 	}
 }
 
-void *readUno(void *){
-	while(true){
-		buf0+=tcp.receive();
-		for(int i=0;i<buf0.length();i++)
-		{
-			if(buf0[i]=='$')
-			{
-				line = buf0.substr(0,i+1);
-				buf0 = buf0.substr(i+1,buf0.length()-i-1);
-				vector <string> tokens;
-				stringstream check1(line);
-				string intermediate;
-				while(getline(check1, intermediate, ':')) 
-				{
-					tokens.push_back(intermediate);
-				}
-				if(tokens[0]=="#1"){
-				for(unsigned int i = 1; i < tokens.size(); i++){
-						pthread_mutex_lock(&mutex_full_ypr);
-						if(tokens[i]!="nan")	full_ypr[MPU_COUNT+2][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+2][i-1];
-						pthread_mutex_unlock(&mutex_full_ypr);
-				}
-				}
-				
-				else if(tokens[0]=="#2"){
-				for(unsigned int i = 1; i < tokens.size(); i++){
-						pthread_mutex_lock(&mutex_full_ypr);
-						if(tokens[i]!="nan")	full_ypr[MPU_COUNT+3][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+3][i-1];
-						pthread_mutex_unlock(&mutex_full_ypr);
-				}
-				}
-			}
-		}
-	}
-}
-
 void loop() {
-	
+	/*znak0 = serialGetchar(USB0);
+		buf0+=znak0;
+		if(znak0=='$')
+		{
+			cout << buf0 << endl;
+			buf0= "";
+		}*/
+	//usleep(60000000);
 }
 
 int main() {
@@ -586,9 +559,6 @@ int main() {
 	pthread_t t_console;
 	pthread_t t_autocorrection;
 	pthread_t t_udpserver;
-	pthread_t t_uno;
-	pthread_create(&t_uno, NULL, readUno, NULL);
-	pthread_detach(t_uno);
 	pthread_create(&t_gyro, NULL, readMPU, NULL);
 	cout << "MPU6050 thread started[OK]" << endl;
 	pthread_create(&t_console, NULL, consoleInput, NULL);
@@ -646,9 +616,9 @@ int main() {
     }
     printf( "|Server's reply|: %s \n", buffer );
    }
-    /*while(true) {
+    while(true) {
 		loop();
-	}*/
+	}
     return 0;
 }
 
