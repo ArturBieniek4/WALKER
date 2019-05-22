@@ -53,9 +53,6 @@ string line1 = "";
 
 const float accelScale = 16384.0f;
 
-char znak0;
-string buf0;
-
 class Timer
 {
 public:
@@ -209,7 +206,7 @@ const unsigned int motorDir[MOTOR_COUNT][2]
 float ypr[MPU_COUNT+ICM_COUNT][3];
 float full_ypr[MPU_COUNT+ICM_COUNT][3];
 
-int USB0;
+int USB0, USB1;
 
 void emergencyStop()
 {
@@ -621,36 +618,7 @@ void *readMega(void *){
 }
 
 void loop() {
-		buf0+=tcp.receive();
-		//cout << buf0;
-		for(int i=0;i<buf0.length();i++)
-		{
-			if(buf0[i]=='$')
-			{
-				line = buf0.substr(0,i+1);
-				vector <string> tokens;
-				stringstream check1(line);
-				string intermediate;
-				while(getline(check1, intermediate, ':')) 
-				{
-					tokens.push_back(intermediate);
-				}
-				if(tokens[0]=="#3"){
-				for(unsigned int i = 1; i < tokens.size(); i++){
-						if(tokens[i]!="nan")	cout << atof(tokens[i].c_str());
-				}
-				}
-				buf0 = buf0.substr(i+1,buf0.length()-i-1);
-			}
-		}
-	/*znak0 = serialGetchar(USB0);
-		buf0+=znak0;
-		if(znak0=='$')
-		{
-			cout << buf0 << endl;
-			buf0= "";
-		}*/
-	//usleep(60000000);
+	usleep(60000000);
 }
 
 int main() {
