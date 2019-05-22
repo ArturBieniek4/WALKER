@@ -261,6 +261,16 @@ void setup() {
 			cout << "EMERGENCY_STOP_PIN is CONNECTED AGAIN." << endl;
 		}
 	}
+	if ((USB0 = serialOpen ("/dev/ttyUSB0", 115200)) < 0)
+	{
+		cout << "Unable to open serial device USB0";
+		return;
+	}
+	if ((USB1 = serialOpen ("/dev/ttyUSB1", 115200)) < 0)
+	{
+		cout << "Unable to open serial device USB1";
+		return;
+	}
 	for(uint8_t x=0;x<EXPANDER_COUNT;x++)
 	{
 		mcp23017Setup(pinBase+16*x, expanderAddr[x]);
@@ -545,36 +555,72 @@ void *UDPServer(void *) {
 
 void *readUno(void *){
 	while(true){
-		buf0+=tcp.receive();
-		for(int i=0;i<buf0.length();i++)
-		{
-			if(buf0[i]=='$')
+		znak1 = serialGetchar(USB1);
+		if (znak1=='$') {
+			line1 = buf1;
+			buf1="";
+			vector <string> tokens;
+			stringstream check1(line1);
+			string intermediate;
+			while(getline(check1, intermediate, ':')) 
 			{
-				line = buf0.substr(0,i+1);
-				buf0 = buf0.substr(i+1,buf0.length()-i-1);
-				vector <string> tokens;
-				stringstream check1(line);
-				string intermediate;
-				while(getline(check1, intermediate, ':')) 
-				{
-					tokens.push_back(intermediate);
-				}
-				if(tokens[0]=="#1"){
-				for(unsigned int i = 1; i < tokens.size(); i++){
-						pthread_mutex_lock(&mutex_full_ypr);
-						if(tokens[i]!="nan")	full_ypr[MPU_COUNT+2][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+2][i-1];
-						pthread_mutex_unlock(&mutex_full_ypr);
-				}
-				}
-				
-				else if(tokens[0]=="#2"){
-				for(unsigned int i = 1; i < tokens.size(); i++){
-						pthread_mutex_lock(&mutex_full_ypr);
-						if(tokens[i]!="nan")	full_ypr[MPU_COUNT+3][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+3][i-1];
-						pthread_mutex_unlock(&mutex_full_ypr);
-				}
-				}
+				tokens.push_back(intermediate);
 			}
+			if(tokens[0]=="#1"){
+			for(unsigned int i = 1; i < tokens.size(); i++){
+					pthread_mutex_lock(&mutex_full_ypr);
+					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+2][i-1] = atof(tokens[i].c_str());
+					pthread_mutex_unlock(&mutex_full_ypr);
+			}
+			}
+			
+			else if(tokens[0]=="#2"){
+			for(unsigned int i = 1; i < tokens.size(); i++){
+					pthread_mutex_lock(&mutex_full_ypr);
+					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+3][i-1] = atof(tokens[i].c_str());
+					pthread_mutex_unlock(&mutex_full_ypr);
+			}
+			}
+			
+		}
+		else{
+			buf1 += znak1;
+		}
+	}
+}
+
+void *readMega(void *){
+	while(true){
+		znak0 = serialGetchar(USB0);
+		if (znak0=='$') {
+			line0 = buf0;
+			buf0="";
+			vector <string> tokens;
+			stringstream check1(line0);
+			string intermediate;
+			while(getline(check1, intermediate, ':')) 
+			{
+				tokens.push_back(intermediate);
+			}
+			if(tokens[0]=="#1"){
+			for(unsigned int i = 1; i < tokens.size(); i++){
+					pthread_mutex_lock(&mutex_full_ypr);
+					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+0][i-1] = atof(tokens[i].c_str());
+					pthread_mutex_unlock(&mutex_full_ypr);
+			}
+			}
+			
+			else if(tokens[0]=="#2"){
+			for(unsigned int i = 1; i < tokens.size(); i++){
+					pthread_mutex_lock(&mutex_full_ypr);
+					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+1][i-1] = atof(tokens[i].c_str());
+					pthread_mutex_unlock(&mutex_full_ypr);
+			}
+			}
+			
+		}
+		else{
+			buf0 += znak0;
 		}
 	}
 }
@@ -615,27 +661,37 @@ void loop() {
 int main() {
 	system("clear");
     setup();
-	/*pthread_t t_gyro;
+	pthread_t t_uno;
+	pthread_t t_mega;
+	pthread_t t_gyro;
 	pthread_t t_console;
 	pthread_t t_autocorrection;
 	pthread_t t_udpserver;
 	pthread_create(&t_gyro, NULL, readMPU, NULL);
 	cout << "MPU6050 thread started[OK]" << endl;
+	pthread_create(&t_uno, NULL, readUno, NULL);
+	cout << "Arduino Uno thread started[OK]" << endl;
+	pthread_create(&t_mega, NULL, readMega, NULL);
+	cout << "Arduino Mega thread started[OK]" << endl;
 	pthread_create(&t_console, NULL, consoleInput, NULL);
 	cout << "Console input thread started[OK]" << endl;
 	pthread_create(&t_autocorrection, NULL, gyroAutoCorrection, NULL);
 	cout << "Gyro Auto Correction thread started[OK]" << endl;
 	pthread_create(&t_udpserver, NULL, UDPServer, NULL);
-	cout << "UDP Server thread started[OK]" << endl;*/
-	/*pthread_detach(t_gyro);
+	cout << "UDP Server thread started[OK]" << endl;
+	pthread_detach(t_uno);
 	cout << "MPU6050 thread detached[OK]" << endl;
+	pthread_detach(t_mega);
+	cout << "Arduino Uno thread detached[OK]" << endl;
+	pthread_detach(t_gyro);
+	cout << "Arduino Mega thread detached[OK]" << endl;
 	pthread_detach(t_console);
 	cout << "Console input thread detached[OK]" << endl;
 	pthread_detach(t_autocorrection);
 	cout << "Gyro Auto Correction thread started[OK]" << endl;
 	pthread_detach(t_udpserver);
 	cout << "UDP Server thread detached[OK]" << endl;
-	cout << "Starting the main loop..." << endl;*/
+cout << "Starting the main loop..." << endl;
     while(true) {
 		loop();
 	}
