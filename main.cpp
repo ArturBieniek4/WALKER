@@ -10,7 +10,6 @@
 #include <math.h>
 #include "I2Cdev.h"
 #include <signal.h>
-#include "TCPClient.h"
 #include <wiringPi.h>
 #include <wiringSerial.h>
 #include <mcp23017.h>
@@ -45,14 +44,12 @@
 
 using namespace std;
 using json = nlohmann::json;
-string buftcp;
-string line;
-TCPClient tcp;
-void sig_exit(int s)
-{
-	tcp.exit();
-	exit(0);
-}
+char znak0;
+string buf0 = "";
+string line0 = "";
+char znak1;
+string buf1 = "";
+string line1 = "";
 
 const float accelScale = 16384.0f;
 
@@ -236,8 +233,6 @@ float compareAngles(float x, float y)
 }
 
 void setup() {
-	signal(SIGINT, sig_exit);
-	tcp.setup("127.0.0.1",10001);
 	wiringPiSetup();
 	pinMode(EMERGENCY_STOP_PIN, INPUT);
 	pullUpDnControl(EMERGENCY_STOP_PIN, PUD_UP);
