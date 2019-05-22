@@ -585,7 +585,7 @@ void *readUno(void *){
 
 void loop() {
 		buf0+=tcp.receive();
-		cout << buf0;
+		//cout << buf0;
 		for(int i=0;i<buf0.length();i++)
 		{
 			if(buf0[i]=='$')
