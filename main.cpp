@@ -311,10 +311,6 @@ void setup() {
 	//socklen_t len;
 	//recvfrom(sockfd, (char *)udpBuffer, UDP_BUFFER_SIZE,  MSG_WAITALL, ( struct sockaddr *) &cliaddr, &len);
 	cout << "[OK]" << endl;
-	if ((USB0 = serialOpen ("/dev/ttyUSB0", 9600)) < 0)
-	{
-		cout << "Unable to open serial device USB0";
-	}
 }
 
 void *readMPU(void *) {
