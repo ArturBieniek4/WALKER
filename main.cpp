@@ -385,7 +385,7 @@ void *readUno1(void *){
 					pthread_mutex_unlock(&mutex_full_ypr);
 			}
 			}
-			if(tokens[0]=="#3"){
+			else if(tokens[0]=="#3"){
 			for(unsigned int i = 1; i < tokens.size(); i++){
 					pthread_mutex_lock(&mutex_full_ypr);
 					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+0][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+0][i-1];
@@ -435,7 +435,7 @@ void *readUno2(void *){
 					pthread_mutex_unlock(&mutex_full_ypr);
 			}
 			}
-			if(tokens[0]=="#3"){
+			else if(tokens[0]=="#3"){
 			for(unsigned int i = 1; i < tokens.size(); i++){
 					pthread_mutex_lock(&mutex_full_ypr);
 					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+0][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+0][i-1];
