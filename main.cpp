@@ -641,7 +641,60 @@ void *UDPServer(void *) {
 }
 
 void loop() {
-	usleep(60000000);
+	znak0 = serialGetchar(USB0);
+		if (znak0=='$') {
+			line0 = buf0;
+			buf0="";
+			vector <string> tokens;
+			stringstream check1(line0);
+			string intermediate;
+			while(getline(check1, intermediate, ':')) 
+			{
+				tokens.push_back(intermediate);
+			}
+			if(tokens[0]=="#1"){
+			for(unsigned int i = 1; i < tokens.size(); i++){
+					pthread_mutex_lock(&mutex_full_ypr);
+					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+2][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+2][i-1];
+					pthread_mutex_unlock(&mutex_full_ypr);
+			}
+			cout << "UNO2, gyro1" << endl;
+			}
+			
+			else if(tokens[0]=="#2"){
+			for(unsigned int i = 1; i < tokens.size(); i++){
+					pthread_mutex_lock(&mutex_full_ypr);
+					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+3][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+3][i-1];
+					pthread_mutex_unlock(&mutex_full_ypr);
+			}
+			cout << "UNO2, gyro2" << endl;
+			}
+			else if(tokens[0]=="#3"){
+			for(unsigned int i = 1; i < tokens.size(); i++){
+					pthread_mutex_lock(&mutex_full_ypr);
+					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+0][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+0][i-1];
+					pthread_mutex_unlock(&mutex_full_ypr);
+			}
+			cout << "UNO2, gyro3" << endl;
+			}
+			
+			else if(tokens[0]=="#4"){
+			for(unsigned int i = 1; i < tokens.size(); i++){
+					pthread_mutex_lock(&mutex_full_ypr);
+					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+1][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+1][i-1];
+					pthread_mutex_unlock(&mutex_full_ypr);
+			}
+			cout << "UNO2, gyro4" << endl;
+			}
+			else{
+				cout << line0 << endl;
+			}
+			
+		}
+		else{
+			buf0 += znak0;
+		}
+	//usleep(60000000);
 }
 
 int main() {
@@ -657,7 +710,7 @@ int main() {
 	cout << "MPU6050 thread started[OK]" << endl;
 	//pthread_create(&t_uno1, NULL, readUno1, NULL);
 	cout << "Arduino Uno1 thread started[OK]" << endl;
-	pthread_create(&t_uno2, NULL, readUno2, NULL);
+	//pthread_create(&t_uno2, NULL, readUno2, NULL);
 	cout << "Arduino Uno2 thread started[OK]" << endl;
 	pthread_create(&t_console, NULL, consoleInput, NULL);
 	cout << "Console input thread started[OK]" << endl;
@@ -667,7 +720,7 @@ int main() {
 	cout << "UDP Server thread started[OK]" << endl;
 	//pthread_detach(t_uno1);
 	cout << "Arduino Uno1 thread detached[OK]" << endl;
-	pthread_detach(t_uno2);
+	//pthread_detach(t_uno2);
 	cout << "Arduino Uno2 thread detached[OK]" << endl;
 	pthread_detach(t_gyro);
 	cout << "MPU6050 thread detached[OK]" << endl;
