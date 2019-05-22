@@ -376,6 +376,7 @@ void *readUno1(void *){
 					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+2][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+2][i-1];
 					pthread_mutex_unlock(&mutex_full_ypr);
 			}
+			cout << "UNO1, gyro1" << endl;
 			}
 			
 			else if(tokens[0]=="#2"){
@@ -384,6 +385,7 @@ void *readUno1(void *){
 					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+3][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+3][i-1];
 					pthread_mutex_unlock(&mutex_full_ypr);
 			}
+			cout << "UNO1, gyro2" << endl;
 			}
 			else if(tokens[0]=="#3"){
 			for(unsigned int i = 1; i < tokens.size(); i++){
@@ -391,6 +393,7 @@ void *readUno1(void *){
 					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+0][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+0][i-1];
 					pthread_mutex_unlock(&mutex_full_ypr);
 			}
+			cout << "UNO1, gyro3" << endl;
 			}
 			
 			else if(tokens[0]=="#4"){
@@ -399,6 +402,7 @@ void *readUno1(void *){
 					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+1][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+1][i-1];
 					pthread_mutex_unlock(&mutex_full_ypr);
 			}
+			cout << "UNO1, gyro4" << endl;
 			}
 		}
 		else{
@@ -426,6 +430,7 @@ void *readUno2(void *){
 					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+2][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+2][i-1];
 					pthread_mutex_unlock(&mutex_full_ypr);
 			}
+			cout << "UNO2, gyro1" << endl;
 			}
 			
 			else if(tokens[0]=="#2"){
@@ -434,6 +439,7 @@ void *readUno2(void *){
 					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+3][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+3][i-1];
 					pthread_mutex_unlock(&mutex_full_ypr);
 			}
+			cout << "UNO2, gyro2" << endl;
 			}
 			else if(tokens[0]=="#3"){
 			for(unsigned int i = 1; i < tokens.size(); i++){
@@ -441,6 +447,7 @@ void *readUno2(void *){
 					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+0][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+0][i-1];
 					pthread_mutex_unlock(&mutex_full_ypr);
 			}
+			cout << "UNO2, gyro3" << endl;
 			}
 			
 			else if(tokens[0]=="#4"){
@@ -449,6 +456,7 @@ void *readUno2(void *){
 					if(tokens[i]!="nan")	full_ypr[MPU_COUNT+1][i-1] = atof(tokens[i].c_str()) + ypr_correction[MPU_COUNT+1][i-1];
 					pthread_mutex_unlock(&mutex_full_ypr);
 			}
+			cout << "UNO2, gyro4" << endl;
 			}
 			
 		}
