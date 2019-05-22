@@ -615,7 +615,7 @@ void loop() {
 int main() {
 	system("clear");
     setup();
-	pthread_t t_gyro;
+	/*pthread_t t_gyro;
 	pthread_t t_console;
 	pthread_t t_autocorrection;
 	pthread_t t_udpserver;
@@ -626,7 +626,7 @@ int main() {
 	pthread_create(&t_autocorrection, NULL, gyroAutoCorrection, NULL);
 	cout << "Gyro Auto Correction thread started[OK]" << endl;
 	pthread_create(&t_udpserver, NULL, UDPServer, NULL);
-	cout << "UDP Server thread started[OK]" << endl;
+	cout << "UDP Server thread started[OK]" << endl;*/
 	/*pthread_detach(t_gyro);
 	cout << "MPU6050 thread detached[OK]" << endl;
 	pthread_detach(t_console);
