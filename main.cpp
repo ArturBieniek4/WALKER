@@ -651,7 +651,7 @@ int main() {
 	pthread_t t_console;
 	pthread_t t_autocorrection;
 	pthread_t t_uno1;
-	//pthread_t t_uno2;
+	pthread_t t_uno2;
 	pthread_t t_udpserver;
 	pthread_create(&t_gyro, NULL, readMPU, NULL);
 	cout << "MPU6050 thread started[OK]" << endl;
