@@ -623,10 +623,10 @@ int main() {
 	pthread_t t_console;
 	pthread_t t_autocorrection;
 	pthread_t t_udpserver;
-	/*pthread_t t_uno;
+	pthread_t t_uno;
 	pthread_create(&t_uno, NULL, readUno, NULL);
 	pthread_detach(t_uno);*/
-	/*pthread_create(&t_gyro, NULL, readMPU, NULL);
+	pthread_create(&t_gyro, NULL, readMPU, NULL);
 	cout << "MPU6050 thread started[OK]" << endl;
 	pthread_create(&t_console, NULL, consoleInput, NULL);
 	cout << "Console input thread started[OK]" << endl;
@@ -634,7 +634,7 @@ int main() {
 	cout << "Gyro Auto Correction thread started[OK]" << endl;
 	pthread_create(&t_udpserver, NULL, UDPServer, NULL);
 	cout << "UDP Server thread started[OK]" << endl;
-	pthread_detach(t_gyro);
+	/*pthread_detach(t_gyro);
 	cout << "MPU6050 thread detached[OK]" << endl;
 	pthread_detach(t_console);
 	cout << "Console input thread detached[OK]" << endl;
